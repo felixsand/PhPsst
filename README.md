@@ -14,11 +14,11 @@ $ composer require felixsand/PhPsst
 
 use PhPsst\PassDist;
 
-$redisClient = Predis\Client();
-$passDist = new PassDist($redisClient);
-$secret = $passDist->store('my secret password');
+$storage = new StorageInterface();
+$phPsst = new PhPsst($storage);
+$secret = $phPsst->store('my secret password');
 echo 'The passwords ID and encryption key: ' . $secret;
-echo 'The password: ' . $passDist->retrieve($secret);
+echo 'The password: ' . $phPsst->retrieve($secret);
 ```
 
 

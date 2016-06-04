@@ -26,7 +26,7 @@ interface StorageInterface
 
     /**
      * @param $key
-     * @return Password
+     * @return Password|null
      */
     public function get($key);
 
