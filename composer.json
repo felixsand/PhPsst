@@ -1,0 +1,27 @@
+{
+    "name": "PHP-pass-dist",
+    "type": "library",
+    "description": "A PHP library for distributing (one time) passwords/secrets in a more secure way",
+    "keywords": ["password","distribution","secret","safely"],
+    "homepage": "https://github.com/felixsand/php-pass-dist",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Felix Sandström",
+            "email": "felix.sandstrom@me.com",
+            "homepage": "https://github.com/felixsand"
+        }
+    ],
+    "require": {
+        "php": ">=5.6.0",
+        "predis/predis": "~1.0",
+        "Illuminate/Encryption": "~5.2",
+        "paragonie/random_compat": "~1.4"
+    },
+    "require-dev": {
+      "phpunit/phpunit": "~4.8"
+    },
+    "autoload": {
+      "psr-4": { "PhPsst\\": "src" }
+    }
+}
