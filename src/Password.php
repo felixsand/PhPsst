@@ -84,6 +84,10 @@ class Password
      */
     public function decreaseViews()
     {
-        $this->views--;
+        if (($this->views - 1) >= 0) {
+            $this->views--;
+        } else {
+            throw new \LogicException('Passwords with negative views should be deleted');
+        }
     }
 }
