@@ -41,17 +41,17 @@ class PhPsst
     public function store($password, $ttl=3600, $views=1)
     {
         if (empty($password)) {
-            throw new \RuntimeException('The password has to be set');
+            throw new \InvalidArgumentException('The password has to be set');
         }
 
         $ttl = (int) $ttl;
         if ($ttl < 1) {
-            throw new \RuntimeException('TTL has to be higher than 0');
+            throw new \InvalidArgumentException('TTL has to be higher than 0');
         }
 
         $views = (int) $views;
         if ($views < 1) {
-            throw new \RuntimeException('Views has to be highter han 0');
+            throw new \InvalidArgumentException('Views has to be highter han 0');
         }
 
         $id = uniqid();
@@ -70,12 +70,12 @@ class PhPsst
     public function retrieve($secret)
     {
         if (!($idKeyArray = explode(';', $secret)) || count($idKeyArray) != 2) {
-            throw new \RuntimeException('Invalid secret');
+            throw new \InvalidArgumentException('Invalid secret');
         }
         list($id, $key) = $idKeyArray;
 
         if (!($password = $this->storage->get($id))) {
-            throw new \RuntimeException('No password with that ID found');
+            throw new PhPsstException('No password with that ID found', PhPsstException::NO_PASSWORD_WITH_ID_FOUND);
         }
         $encrypter = new Encrypter($key, self::CIPHER);
 

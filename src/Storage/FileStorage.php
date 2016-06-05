@@ -18,15 +18,23 @@ class FileStorage
     protected $dir;
 
     /**
+     * @var int
+     */
+    protected $gcProbability;
+
+    /**
      * FileStorage constructor.
      * @param string $dir
+     * @param int $gcProbability
      */
-    public function __construct($dir)
+    public function __construct($dir, $gcProbability = 10)
     {
         if (empty($dir) || !is_dir($dir)) {
-            throw new \RuntimeException('Invalid filepath');
+            throw new \RuntimeException('Invalid directory path');
         }
+
         $this->dir = $dir;
+        $this->gcProbability = $gcProbability;
     }
 
     /**
@@ -34,11 +42,12 @@ class FileStorage
      */
     public function insert(Password $password)
     {
-        if (!$force && file_exists($this->dir . $password->getId())) {
-            throw new \RuntimeException('The ID already exists');
+        if (file_exists($this->dir . $password->getId())) {
+            throw new PhPsstException('The ID already exists', PhPsstException::ID_IS_ALREADY_TAKEN);
         }
 
         $this->writeFile($password);
+        $this->garbageCollection();
     }
 
     /**
@@ -46,7 +55,12 @@ class FileStorage
      */
     public function update(Password $password)
     {
+        if (!file_exists($this->dir . $password->getId())) {
+            throw new PhPsstException('No such ID exists', PhPsstException::NO_PASSWORD_WITH_ID_FOUND);
+        }
+
         $this->writeFile($password);
+        $this->garbageCollection();
     }
 
     /**
@@ -70,11 +84,28 @@ class FileStorage
 
     /**
      * @param Password $password
-     * @return void
      */
     public function delete(Password $password)
     {
         unlink($this->dir . $password->getId());
+    }
+
+    /**
+     */
+    protected function garbageCollection()
+    {
+        if (rand(1, $this->gcProbability) !== 1) {
+            return;
+        }
+
+        $files = array_diff(scandir($this->dir), array('.', '..'));
+        foreach ($files as $file) {
+            if (($jsonData = json_decode(file_get_contents($this->dir . $file)))) {
+                if ($jsonData['ttlTime'] < time()) {
+                    unlink($this->dir . $file);
+                }
+            }
+        }
     }
 
     /**
@@ -86,7 +117,8 @@ class FileStorage
             'id' => $password->getId(),
             'password' => $password->getPassword(),
             'ttl' => $password->getTtl(),
-            'views' => $password->getViews()
+            'ttlTime' => time() + $password->getTtl(),
+            'views' => $password->getViews(),
         ]);
         if (! file_put_contents($this->dir . $password->getId(), $jsonData)) {
             throw new \RuntimeException('Can not store Password');
