@@ -25,8 +25,14 @@ echo 'The password: ' . $phPsst->retrieve($secret);
 ### FileStorage
 The most basic of the storage classes is the FileStorage. It's also (generally) the most insecure and if you store a lot
 of passwords there's a performance issue due to the garbage collector being very crude. It is however the easiest way
-to try out the library and useful during development
+to try out the library and useful during development.
 
+### RedisStorage
+The recommended production storage class is the RedisStorage. It has great performance even during heavy use and
+since it removes the passwords with expired TTL automatically, it's more secure than the other options.
+It's important to note that if you're not reviewing the Redis configuration, it might purge entries even before the
+item's TTL has expired (if it's memory limit is reached) and the items will only live for as long as the server is
+running. This might be desired properties in certain cases, but you need to be aware of it when setting up the solution.
 
 ## Requirements
 - PHP 5.6 or above.
