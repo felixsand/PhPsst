@@ -23,10 +23,14 @@ class PhPsst
      */
     protected $storage;
 
+    /**
+     * @const string
+     */
     const CIPHER = 'AES-256-CBC';
 
     /**
-     * PassDist constructor.
+     * PhPsst constructor.
+     * @param StorageInterface $storage
      */
     public function __construct(StorageInterface $storage)
     {
