@@ -43,7 +43,7 @@ class PhPsst
      * @param int $views
      * @return string
      */
-    public function store($password, $ttl=3600, $views=1)
+    public function store($password, $ttl = 3600, $views = 1)
     {
         if (empty($password)) {
             throw new \InvalidArgumentException('The password has to be set');
