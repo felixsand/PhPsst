@@ -1,5 +1,5 @@
 {
-    "name": "felixsand/PhPsst",
+    "name": "felixsand/phpsst",
     "type": "library",
     "description": "A PHP library for distributing (one time) passwords/secrets in a more secure way",
     "keywords": ["password","distribution","secret","safely"],
