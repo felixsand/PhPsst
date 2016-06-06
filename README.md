@@ -1,13 +1,15 @@
 # PhPsst
 
+[![Latest Stable Version](https://poser.pugx.org/felixsand/phpsst/v/stable)](https://packagist.org/packages/felixsand/phpsst)
 [![Build Status](https://travis-ci.org/felixsand/PhPsst.svg?branch=master)](https://travis-ci.org/felixsand/PhPsst)
+[![License](https://poser.pugx.org/felixsand/phpsst/license)](https://packagist.org/packages/felixsand/phpsst)
 
 A PHP library for distributing (one time) passwords/secrets in a more secure way
 
 ## Installation
 Add the package as a requirement to your `composer.json`:
 ```bash
-$ composer require felixsand/PhPsst
+$ composer require felixsand/phpsst
 ```
 
 ## Usage
