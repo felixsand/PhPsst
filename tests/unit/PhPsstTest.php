@@ -151,7 +151,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
         $phPsst = new PhPsst($storageMock);
 
         $this->setExpectedException('PhPsst\PhPsstException', '', PhPsstException::NO_PASSWORD_WITH_ID_FOUND);
-        $decryptedPassword = $phPsst->retrieve('id;secret');
+        $phPsst->retrieve('id;secret');
     }
 
 }

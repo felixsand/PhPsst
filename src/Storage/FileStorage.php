@@ -26,12 +26,20 @@ class FileStorage implements StorageInterface
     protected $gcProbability;
 
     /**
+     * @const string
+     */
+    const FILE_SUFFIX = '.phpsst';
+
+    /**
      * FileStorage constructor.
      * @param string $dir
      * @param int $gcProbability
      */
     public function __construct($dir, $gcProbability = 10)
     {
+        if (substr($dir, -1) != '/') {
+            $dir .= '/';
+        }
         if (empty($dir) || !is_dir($dir)) {
             throw new \RuntimeException('Invalid directory path');
         }
@@ -45,7 +53,7 @@ class FileStorage implements StorageInterface
      */
     public function insert(Password $password)
     {
-        if (file_exists($this->dir . $password->getId())) {
+        if (file_exists($this->getFileName($password))) {
             throw new PhPsstException('The ID already exists', PhPsstException::ID_IS_ALREADY_TAKEN);
         }
 
@@ -58,7 +66,7 @@ class FileStorage implements StorageInterface
      */
     public function update(Password $password)
     {
-        if (!file_exists($this->dir . $password->getId())) {
+        if (!file_exists($this->getFileName($password))) {
             throw new PhPsstException('No such ID exists', PhPsstException::NO_PASSWORD_WITH_ID_FOUND);
         }
 
@@ -73,13 +81,22 @@ class FileStorage implements StorageInterface
     public function get($key)
     {
         $password = null;
-        if (($jsonData = json_decode(file_get_contents($this->dir . $key)))) {
-            if (!empty($jsonData['id'])
-                && !empty($jsonData['password'])
-                && !empty($jsonData['ttl'])
-                && !empty($jsonData['views'])) {
+        if (!file_exists($this->getFileNameFromKey($key))) {
+            throw new PhPsstException('No such ID exists', PhPsstException::NO_PASSWORD_WITH_ID_FOUND);
+        }
+
+        if (($jsonData = json_decode(file_get_contents($this->getFileNameFromKey($key))))) {
+            if (!empty($jsonData->id)
+                && !empty($jsonData->password)
+                && !empty($jsonData->ttl)
+                && !empty($jsonData->views)
+            ) {
+                $password = new Password($jsonData->id, $jsonData->password, $jsonData->ttl, $jsonData->views);
+                if ($jsonData->ttlTime < time()) {
+                    $this->delete($password);
+                    throw new PhPsstException('No such ID exists', PhPsstException::NO_PASSWORD_WITH_ID_FOUND);
+                }
             }
-            $password = new Password($jsonData['id'], $jsonData['password'], $jsonData['ttl'], $jsonData['views']);
         }
 
         return $password;
@@ -90,7 +107,7 @@ class FileStorage implements StorageInterface
      */
     public function delete(Password $password)
     {
-        unlink($this->dir . $password->getId());
+        unlink($this->getFileName($password));
     }
 
     /**
@@ -103,8 +120,8 @@ class FileStorage implements StorageInterface
 
         $files = array_diff(scandir($this->dir), array('.', '..'));
         foreach ($files as $file) {
-            if (($jsonData = json_decode(file_get_contents($this->dir . $file)))) {
-                if ($jsonData['ttlTime'] < time()) {
+            if (($jsonData = json_decode($this->dir . $file))) {
+                if ($jsonData->ttlTime < time()) {
                     unlink($this->dir . $file);
                 }
             }
@@ -123,8 +140,26 @@ class FileStorage implements StorageInterface
             'ttlTime' => time() + $password->getTtl(),
             'views' => $password->getViews(),
         ]);
-        if (! file_put_contents($this->dir . $password->getId(), $jsonData)) {
+        if (! file_put_contents($this->getFileName($password), $jsonData)) {
             throw new \RuntimeException('Can not store Password');
         }
+    }
+
+    /**
+     * @param Password $password
+     * @return string
+     */
+    protected function getFileName(Password $password)
+    {
+        return $this->getFileNameFromKey($password->getId());
+    }
+
+    /**
+     * @param string $key
+     * @return string
+     */
+    protected function getFileNameFromKey($key)
+    {
+        return $this->dir . $key . self::FILE_SUFFIX;
     }
 }

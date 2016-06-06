@@ -85,7 +85,11 @@ class PhPsst
         $encrypter = new Encrypter($key, self::CIPHER);
 
         $password->decreaseViews();
-        $this->storage->update($password);
+        if ($password->getViews() > 0) {
+            $this->storage->update($password);
+        } else {
+            $this->storage->delete($password);
+        }
 
         return $encrypter->decrypt($password->getPassword());
     }

@@ -4,6 +4,11 @@
             <directory>tests/unit</directory>
         </testsuite>
     </testsuites>
+    <testsuites>
+        <testsuite name="integration">
+            <directory>tests/integration</directory>
+        </testsuite>
+    </testsuites>
     <filter>
         <whitelist>
             <directory suffix=".php">src</directory>
