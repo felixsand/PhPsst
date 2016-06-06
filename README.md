@@ -11,14 +11,13 @@ $ composer require felixsand/PhPsst
 ## Usage
 ```php
 <?php
+use PhPsst\PhPsst;
+use PhPsst\Storage\FileStorage;
 
-use PhPsst\PassDist;
-
-$storage = new FileStorage('data/passwords/', 10);
-$phPsst = new PhPsst($storage);
+$phPsst = new PhPsst(new FileStorage('data/passwords', 10));
 $secret = $phPsst->store('my secret password');
-echo 'The passwords ID and encryption key: ' . $secret;
-echo 'The password: ' . $phPsst->retrieve($secret);
+echo "The passwords ID and encryption key: {$secret}\n";
+echo "The password: {$phPsst->retrieve($secret)}\n";
 ```
 
 ## Storage Classes
