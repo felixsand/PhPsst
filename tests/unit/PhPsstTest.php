@@ -32,7 +32,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Password::__construct
+     * @covers PhPsst\PhPsst::__construct
      */
     public function testConstruct()
     {
@@ -40,7 +40,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Password::store
+     * @covers PhPsst\PhPsst::store
      */
     public function testStore()
     {
@@ -55,7 +55,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Password::store
+     * @covers PhPsst\PhPsst::store
      */
     public function testStoreNoKey()
     {
@@ -69,7 +69,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Password::store
+     * @covers PhPsst\PhPsst::store
      */
     public function testStoreInvalidTtl()
     {
@@ -83,7 +83,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Password::store
+     * @covers PhPsst\PhPsst::store
      */
     public function testStoreInvalidViews()
     {
@@ -97,7 +97,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Password::retrieve
+     * @covers PhPsst\PhPsst::retrieve
      */
     public function testRetrieve()
     {
@@ -117,7 +117,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Password::retrieve
+     * @covers PhPsst\PhPsst::retrieve
      */
     public function testRetrieveInvalidSecret()
     {
@@ -136,7 +136,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Password::retrieve
+     * @covers PhPsst\PhPsst::retrieve
      */
     public function testRetrieveNoPasswordFound()
     {

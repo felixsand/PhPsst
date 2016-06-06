@@ -35,7 +35,7 @@ running. This might be desired properties in certain cases, but you need to be a
 
 ## Requirements
 - PHP 5.6 or above.
-- Redis
+- Redis (for the Redis Storage)
 
 ## Author
 Felix Sandström <http://github.com/felixsand>

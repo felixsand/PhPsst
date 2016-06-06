@@ -120,7 +120,7 @@ class FileStorage implements StorageInterface
 
         $files = array_diff(scandir($this->dir), array('.', '..'));
         foreach ($files as $file) {
-            if (($jsonData = json_decode($this->dir . $file))) {
+            if (($jsonData = json_decode(file_get_contents($this->dir . $file)))) {
                 if ($jsonData->ttlTime < time()) {
                     unlink($this->dir . $file);
                 }
@@ -140,8 +140,10 @@ class FileStorage implements StorageInterface
             'ttlTime' => time() + $password->getTtl(),
             'views' => $password->getViews(),
         ]);
-        if (! file_put_contents($this->getFileName($password), $jsonData)) {
-            throw new \RuntimeException('Can not store Password');
+
+        $fileName = $this->getFileName($password);
+        if (!is_writable(dirname($fileName)) || !file_put_contents($fileName, $jsonData)) {
+            throw new \RuntimeException('Can not write file');
         }
     }
 
