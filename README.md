@@ -1,5 +1,7 @@
 # PhPsst
 
+[![Build Status](https://travis-ci.org/felixsand/PhPsst.svg?branch=master)](https://travis-ci.org/felixsand/PhPsst)
+
 A PHP library for distributing (one time) passwords/secrets in a more secure way
 
 ## Installation
