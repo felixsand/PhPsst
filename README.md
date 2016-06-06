@@ -20,8 +20,8 @@ use PhPsst\Storage\FileStorage;
 
 $phPsst = new PhPsst(new FileStorage('data/passwords', 10));
 $secret = $phPsst->store('my secret password');
-echo "The passwords ID and encryption key: {$secret}\n";
-echo "The password: {$phPsst->retrieve($secret)}\n";
+echo "Retrieve the password from: https://example.net/getPassword/{$secret}\n";
+echo "The password stored: {$phPsst->retrieve($secret)}\n";
 ```
 
 ## Storage Classes
