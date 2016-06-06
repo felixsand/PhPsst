@@ -9,6 +9,7 @@
 namespace PhPsst;
 
 use Illuminate\Encryption\Encrypter;
+use PhPsst\Storage\StorageInterface;
 
 /**
  * A PHP library for distributing (one time) passwords/secrets in a more secure way.

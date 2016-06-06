@@ -6,11 +6,14 @@
  * @license   MIT
  */
 
-namespace PhPsst;
+namespace PhPsst\Storage;
+
+use PhPsst\Password;
+use PhPsst\PhPsstException;
 
 /**
  */
-class FileStorage
+class FileStorage implements StorageInterface
 {
     /**
      * @var string

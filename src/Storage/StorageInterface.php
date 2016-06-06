@@ -6,7 +6,9 @@
  * @license   MIT
  */
 
-namespace PhPsst;
+namespace PhPsst\Storage;
+
+use PhPsst\Password;
 
 /**
  */
