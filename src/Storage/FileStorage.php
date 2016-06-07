@@ -58,7 +58,6 @@ class FileStorage implements StorageInterface
         }
 
         $this->writeFile($password);
-        $this->garbageCollection();
     }
 
     /**
@@ -71,7 +70,6 @@ class FileStorage implements StorageInterface
         }
 
         $this->writeFile($password);
-        $this->garbageCollection();
     }
 
     /**
@@ -145,6 +143,8 @@ class FileStorage implements StorageInterface
         if (!is_writable(dirname($fileName)) || !file_put_contents($fileName, $jsonData)) {
             throw new \RuntimeException('Can not write file');
         }
+
+        $this->garbageCollection();
     }
 
     /**
