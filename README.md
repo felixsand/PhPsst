@@ -22,8 +22,16 @@ use PhPsst\Storage\FileStorage;
 
 $phPsst = new PhPsst(new FileStorage('data/passwords', 10));
 $secret = $phPsst->store('my secret password');
-echo "Retrieve the password from: https://example.net/get-password/{$secret}\n";
-echo "The password stored: {$phPsst->retrieve($secret)}\n";
+echo "Retrieve the password from: https://example.net/get-password?secret={$secret}";
+```
+```php
+<?php
+use PhPsst\PhPsst;
+use PhPsst\Storage\FileStorage;
+
+$phPsst = new PhPsst(new FileStorage('data/passwords', 10));
+$decryptedPassword = $phPsst->retrieve($_GET['secret']);
+echo "The password stored: {$decryptedPassword}";
 ```
 
 ## Storage Classes
