@@ -31,6 +31,15 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers PhPsst\Storage\FileStorage::__construct
+     */
+    public function testInvalidContruct()
+    {
+        $this->setExpectedException('LogicException');
+        new FileStorage($this->passwordDirectory, -1);
+    }
+
+    /**
+     * @covers PhPsst\Storage\FileStorage::__construct
      * @covers PhPsst\Storage\FileStorage::store
      * @covers PhPsst\Storage\FileStorage::garbageCollection
      * @covers PhPsst\Storage\FileStorage::writeFile
@@ -136,6 +145,41 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
         $fileStorage->store($passwordTwo);
 
         // Since the GC should have run the file with the same ID should not exist anymore
+        $fileStorage->store($password);
+    }
+
+    /**
+     * @covers PhPsst\Storage\FileStorage::__construct
+     * @covers PhPsst\Storage\FileStorage::store
+     * @covers PhPsst\Storage\FileStorage::garbageCollection
+     * @covers PhPsst\Storage\FileStorage::writeFile
+     * @covers PhPsst\Storage\FileStorage::getFileName
+     * @covers PhPsst\Storage\FileStorage::getFileNameFromKey
+     * @covers PhPsst\Storage\FileStorage::delete
+     */
+    public function testGarbageCollectorNotRunning()
+    {
+        $password = $this->getMockBuilder('PhPsst\Password')->disableOriginalConstructor()->getMock();
+        $password->expects($this->atLeastOnce())->method('getId')->willReturn(uniqid());
+        $password->expects($this->atLeastOnce())->method('getPassword')->willReturn('secret');
+        $password->expects($this->atLeastOnce())->method('getTtl')->willReturn(1);
+        $password->expects($this->atLeastOnce())->method('getViews')->willReturn(3);
+
+        $passwordTwo = $this->getMockBuilder('PhPsst\Password')->disableOriginalConstructor()->getMock();
+        $passwordTwo->expects($this->atLeastOnce())->method('getId')->willReturn(uniqid());
+        $passwordTwo->expects($this->atLeastOnce())->method('getPassword')->willReturn('secret');
+        $passwordTwo->expects($this->atLeastOnce())->method('getTtl')->willReturn(1);
+        $passwordTwo->expects($this->atLeastOnce())->method('getViews')->willReturn(3);
+        /** @var Password $password */
+        /** @var Password $passwordTwo */
+
+        $fileStorage = new FileStorage($this->passwordDirectory, 0);
+        $fileStorage->store($password);
+        sleep(2);
+        $fileStorage->store($passwordTwo);
+
+        // Since the GC should NOT have run the file with the same ID should not exist anymore
+        $this->setExpectedException('PhPsst\PhPsstException', '', PhPsstException::ID_IS_ALREADY_TAKEN);
         $fileStorage->store($password);
     }
 

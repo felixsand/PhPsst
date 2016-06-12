@@ -103,7 +103,7 @@ class FileStorage implements StorageInterface
      */
     protected function garbageCollection()
     {
-        if (rand(1, $this->gcProbability) !== 1) {
+        if (!$this->gcProbability || rand(1, $this->gcProbability) !== 1) {
             return;
         }
 

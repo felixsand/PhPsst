@@ -40,6 +40,18 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PhPsst\PhPsst::__construct
+     */
+    public function testConstructWithCipher()
+    {
+        $storageMock = $this->getMockBuilder('PhPsst\Storage\FileStorage')->disableOriginalConstructor()->getMock();
+
+        /** @var FileStorage $storageMock */
+        $phPsst = new PhPsst($storageMock, 'AES-256-CBC');
+        $this->assertInstanceOf('PhPsst\PhPsst', $phPsst);
+    }
+
+    /**
      * @covers PhPsst\PhPsst::store
      */
     public function testStore()

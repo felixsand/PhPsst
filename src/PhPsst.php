@@ -41,7 +41,7 @@ class PhPsst
     public function __construct(StorageInterface $storage, $cipher = null)
     {
         $this->storage = $storage;
-        if ($cipher) {
+        if ($cipher !== null) {
             $this->cipher = $cipher;
         } else {
             $this->cipher = self::CIPHER_DEFAULT;
