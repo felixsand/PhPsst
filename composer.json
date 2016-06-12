@@ -19,7 +19,7 @@
         "paragonie/random_compat": "~1.4"
     },
     "require-dev": {
-      "phpunit/phpunit": "~4.8"
+      "phpunit/phpunit": "~5.4"
     },
     "autoload": {
       "psr-4": { "PhPsst\\": "src" }
