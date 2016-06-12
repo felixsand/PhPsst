@@ -22,7 +22,7 @@ use PhPsst\Storage\FileStorage;
 
 $phPsst = new PhPsst(new FileStorage('data/passwords', 10));
 $secret = $phPsst->store('my secret password');
-echo "Retrieve the password from: https://example.net/getPassword/{$secret}\n";
+echo "Retrieve the password from: https://example.net/get-password/{$secret}\n";
 echo "The password stored: {$phPsst->retrieve($secret)}\n";
 ```
 
@@ -30,7 +30,9 @@ echo "The password stored: {$phPsst->retrieve($secret)}\n";
 ### FileStorage
 The most basic of the storage classes is the FileStorage. It's also (generally) the most insecure and if you store a lot
 of passwords there's a performance issue due to the garbage collector being very crude. It is however the easiest way
-to try out the library and useful during development.
+to try out the library and useful during development. The constructor parameter $gcProbability is a value from 0 and up,
+where 0 disables the GC; 1 means it's run for every file write; 10 means it got a 10% probability of running; etc. It's
+not recommended to turn it off.
 
 ### RedisStorage
 The recommended production storage class is the RedisStorage. It has great performance even during heavy use and

@@ -24,17 +24,28 @@ class PhPsst
     protected $storage;
 
     /**
+     * @var string
+     */
+    protected $cipher;
+
+    /**
      * @const string
      */
-    const CIPHER = 'AES-256-CBC';
+    const CIPHER_DEFAULT = 'AES-256-CBC';
 
     /**
      * PhPsst constructor.
      * @param StorageInterface $storage
+     * @param string $cipher
      */
-    public function __construct(StorageInterface $storage)
+    public function __construct(StorageInterface $storage, $cipher = null)
     {
         $this->storage = $storage;
+        if ($cipher) {
+            $this->cipher = $cipher;
+        } else {
+            $this->cipher = self::CIPHER_DEFAULT;
+        }
     }
 
     /**
@@ -61,7 +72,7 @@ class PhPsst
 
         $id = uniqid();
         $key = bin2hex(random_bytes(16));
-        $encrypter = new Encrypter($key, self::CIPHER);
+        $encrypter = new Encrypter($key, $this->cipher);
 
         $this->storage->insert(new Password($id, $encrypter->encrypt($password), $ttl, $views));
 
@@ -82,7 +93,7 @@ class PhPsst
         if (!($password = $this->storage->get($id))) {
             throw new PhPsstException('No password with that ID found', PhPsstException::NO_PASSWORD_WITH_ID_FOUND);
         }
-        $encrypter = new Encrypter($key, self::CIPHER);
+        $encrypter = new Encrypter($key, $this->cipher);
 
         $password->decreaseViews();
         if ($password->getViews() > 0) {

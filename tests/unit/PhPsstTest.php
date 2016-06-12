@@ -103,7 +103,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
     {
         $id = uniqid();
         $key = bin2hex(random_bytes(16));
-        $encryptedPassword = (new Encrypter($key, PhPsst::CIPHER))->encrypt('secretMessage');
+        $encryptedPassword = (new Encrypter($key, PhPsst::CIPHER_DEFAULT))->encrypt('secretMessage');
         $password = new Password('id', $encryptedPassword, 300, 3);
 
         $storageMock = $this->getMockBuilder('PhPsst\Storage\FileStorage')->disableOriginalConstructor()->getMock();
@@ -123,7 +123,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
     {
         $id = uniqid();
         $key = bin2hex(random_bytes(16));
-        $encryptedPassword = (new Encrypter($key, PhPsst::CIPHER))->encrypt('secretMessage');
+        $encryptedPassword = (new Encrypter($key, PhPsst::CIPHER_DEFAULT))->encrypt('secretMessage');
         $password = new Password('id', $encryptedPassword, 300, 3);
 
         $storageMock = $this->getMockBuilder('PhPsst\Storage\FileStorage')->disableOriginalConstructor()->getMock();
@@ -142,7 +142,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
     {
         $id = uniqid();
         $key = bin2hex(random_bytes(16));
-        $encryptedPassword = (new Encrypter($key, PhPsst::CIPHER))->encrypt('secretMessage');
+        $encryptedPassword = (new Encrypter($key, PhPsst::CIPHER_DEFAULT))->encrypt('secretMessage');
         $password = new Password('id', $encryptedPassword, 300, 3);
 
         $storageMock = $this->getMockBuilder('PhPsst\Storage\FileStorage')->disableOriginalConstructor()->getMock();

@@ -35,13 +35,15 @@ class FileStorage implements StorageInterface
      * @param string $dir
      * @param int $gcProbability
      */
-    public function __construct($dir, $gcProbability = 10)
+    public function __construct($dir, $gcProbability)
     {
-        if (substr($dir, -1) != '/') {
-            $dir .= '/';
-        }
+        $dir = rtrim($dir, '/') . '/';
         if (empty($dir) || !is_dir($dir)) {
             throw new \RuntimeException('Invalid directory path');
+        }
+
+        if ($gcProbability < 0) {
+            throw new \LogicException('Invalid value for gcProbability');
         }
 
         $this->dir = $dir;
