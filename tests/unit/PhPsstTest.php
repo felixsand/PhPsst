@@ -45,7 +45,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
     public function testStore()
     {
         $storageMock = $this->getMockBuilder('PhPsst\Storage\FileStorage')->disableOriginalConstructor()->getMock();
-        $storageMock->expects($this->once())->method('insert');
+        $storageMock->expects($this->once())->method('store');
 
         /** @var FileStorage $storageMock */
         $phPsst = new PhPsst($storageMock);

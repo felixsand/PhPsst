@@ -31,14 +31,13 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers PhPsst\Storage\FileStorage::__construct
-     * @covers PhPsst\Storage\FileStorage::insert
+     * @covers PhPsst\Storage\FileStorage::store
      * @covers PhPsst\Storage\FileStorage::garbageCollection
      * @covers PhPsst\Storage\FileStorage::writeFile
      * @covers PhPsst\Storage\FileStorage::getFileName
      * @covers PhPsst\Storage\FileStorage::getFileNameFromKey
-     * @covers PhPsst\Storage\FileStorage::update
      */
-    public function testInsert()
+    public function testStore()
     {
         $password = $this->getMockBuilder('PhPsst\Password')->disableOriginalConstructor()->getMock();
         $password->expects($this->atLeast(2))->method('getId')->willReturn(uniqid());
@@ -48,25 +47,25 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
 
         $fileStorage = new FileStorage($this->passwordDirectory, 1);
         /** @var Password $password */
-        $fileStorage->insert($password);
-        $fileStorage->update($password);
+        $fileStorage->store($password);
+        $fileStorage->store($password, true);
     }
 
     /**
      * @covers PhPsst\Storage\FileStorage::__construct
-     * @covers PhPsst\Storage\FileStorage::insert
+     * @covers PhPsst\Storage\FileStorage::store
      */
-    public function testInsertSameId()
+    public function testStoreSameId()
     {
         $password = $this->getMockBuilder('PhPsst\Password')->disableOriginalConstructor()->getMock();
         $password->expects($this->atLeastOnce())->method('getId')->willReturn(uniqid());
 
         $fileStorage = new FileStorage($this->passwordDirectory, 1);
         /** @var Password $password */
-        $fileStorage->insert($password);
+        $fileStorage->store($password);
 
         $this->setExpectedException('PhPsst\PhPsstException', '', PhPsstException::ID_IS_ALREADY_TAKEN);
-        $fileStorage->insert($password);
+        $fileStorage->store($password);
     }
 
     /**
@@ -80,7 +79,7 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers PhPsst\Storage\FileStorage::__construct
-     * @covers PhPsst\Storage\FileStorage::insert
+     * @covers PhPsst\Storage\FileStorage::store
      * @covers PhPsst\Storage\FileStorage::writeFile
      * @covers PhPsst\Storage\FileStorage::getFileName
      * @covers PhPsst\Storage\FileStorage::getFileNameFromKey
@@ -101,47 +100,19 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
 
         $this->setExpectedException('RuntimeException', 'Can not write file');
         /** @var Password $password */
-        $fileStorage->insert($password);
+        $fileStorage->store($password);
 
         rmdir($invalidDirectory);
     }
 
     /**
      * @covers PhPsst\Storage\FileStorage::__construct
-     * @covers PhPsst\Storage\FileStorage::insert
+     * @covers PhPsst\Storage\FileStorage::store
      * @covers PhPsst\Storage\FileStorage::garbageCollection
      * @covers PhPsst\Storage\FileStorage::writeFile
      * @covers PhPsst\Storage\FileStorage::getFileName
      * @covers PhPsst\Storage\FileStorage::getFileNameFromKey
      * @covers PhPsst\Storage\FileStorage::delete
-     * @covers PhPsst\Storage\FileStorage::update
-     */
-    public function testUpdateNoFile()
-    {
-        $password = $this->getMockBuilder('PhPsst\Password')->disableOriginalConstructor()->getMock();
-        $password->expects($this->atLeastOnce())->method('getId')->willReturn(uniqid());
-        $password->expects($this->atLeastOnce())->method('getPassword');
-        $password->expects($this->atLeastOnce())->method('getTtl');
-        $password->expects($this->atLeastOnce())->method('getViews');
-        /** @var Password $password */
-
-        $fileStorage = new FileStorage($this->passwordDirectory, 10);
-        $fileStorage->insert($password);
-        $fileStorage->delete($password);
-
-        $this->setExpectedException('PhPsst\PhPsstException', '', PhPsstException::NO_PASSWORD_WITH_ID_FOUND);
-        $fileStorage->update($password);
-    }
-
-    /**
-     * @covers PhPsst\Storage\FileStorage::__construct
-     * @covers PhPsst\Storage\FileStorage::insert
-     * @covers PhPsst\Storage\FileStorage::garbageCollection
-     * @covers PhPsst\Storage\FileStorage::writeFile
-     * @covers PhPsst\Storage\FileStorage::getFileName
-     * @covers PhPsst\Storage\FileStorage::getFileNameFromKey
-     * @covers PhPsst\Storage\FileStorage::delete
-     * @covers PhPsst\Storage\FileStorage::update
      */
     public function testGarbageCollector()
     {
@@ -160,12 +131,12 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
         /** @var Password $passwordTwo */
 
         $fileStorage = new FileStorage($this->passwordDirectory, 1);
-        $fileStorage->insert($password);
+        $fileStorage->store($password);
         sleep(2);
-        $fileStorage->insert($passwordTwo);
+        $fileStorage->store($passwordTwo);
 
         // Since the GC should have run the file with the same ID should not exist anymore
-        $fileStorage->insert($password);
+        $fileStorage->store($password);
     }
 
     /**

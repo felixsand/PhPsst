@@ -52,23 +52,12 @@ class FileStorage implements StorageInterface
 
     /**
      * @param Password $password
+     * @param bool $allowOverwrite
      */
-    public function insert(Password $password)
+    public function store(Password $password, $allowOverwrite = false)
     {
-        if (file_exists($this->getFileName($password))) {
+        if (!$allowOverwrite && file_exists($this->getFileName($password))) {
             throw new PhPsstException('The ID already exists', PhPsstException::ID_IS_ALREADY_TAKEN);
-        }
-
-        $this->writeFile($password);
-    }
-
-    /**
-     * @param Password $password
-     */
-    public function update(Password $password)
-    {
-        if (!file_exists($this->getFileName($password))) {
-            throw new PhPsstException('No such ID exists', PhPsstException::NO_PASSWORD_WITH_ID_FOUND);
         }
 
         $this->writeFile($password);

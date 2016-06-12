@@ -74,7 +74,7 @@ class PhPsst
         $key = bin2hex(random_bytes(16));
         $encrypter = new Encrypter($key, $this->cipher);
 
-        $this->storage->insert(new Password($id, $encrypter->encrypt($password), $ttl, $views));
+        $this->storage->store(new Password($id, $encrypter->encrypt($password), $ttl, $views));
 
         return $id . ';' . $key;
     }
@@ -97,7 +97,7 @@ class PhPsst
 
         $password->decreaseViews();
         if ($password->getViews() > 0) {
-            $this->storage->update($password);
+            $this->storage->store($password, true);
         } else {
             $this->storage->delete($password);
         }

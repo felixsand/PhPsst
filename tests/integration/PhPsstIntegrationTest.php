@@ -31,8 +31,7 @@ class PhPsstIntegrationTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers PhPsst\Storage\FileStorage::__construct
-     * @covers PhPsst\Storage\FileStorage::insert
-     * @covers PhPsst\Storage\FileStorage::update
+     * @covers PhPsst\Storage\FileStorage::store
      * @covers PhPsst\Storage\FileStorage::get
      * @covers PhPsst\Storage\FileStorage::garbageCollection
      * @covers PhPsst\Storage\FileStorage::writeFile
@@ -53,7 +52,7 @@ class PhPsstIntegrationTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers PhPsst\Storage\FileStorage::__construct
-     * @covers PhPsst\Storage\FileStorage::insert
+     * @covers PhPsst\Storage\FileStorage::store
      * @covers PhPsst\Storage\FileStorage::delete
      * @covers PhPsst\Storage\FileStorage::get
      * @covers PhPsst\Storage\FileStorage::garbageCollection
@@ -78,7 +77,7 @@ class PhPsstIntegrationTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers PhPsst\Storage\FileStorage::__construct
-     * @covers PhPsst\Storage\FileStorage::insert
+     * @covers PhPsst\Storage\FileStorage::store
      * @covers PhPsst\Storage\FileStorage::delete
      * @covers PhPsst\Storage\FileStorage::get
      * @covers PhPsst\Storage\FileStorage::garbageCollection

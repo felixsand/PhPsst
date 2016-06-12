@@ -16,15 +16,9 @@ interface StorageInterface
 {
     /**
      * @param Password $password
-     * @return void
+     * @param bool $allowOverwrite
      */
-    public function insert(Password $password);
-
-    /**
-     * @param Password $password
-     * @return void
-     */
-    public function update(Password $password);
+    public function store(Password $password, $allowOverwrite = false);
 
     /**
      * @param $key
