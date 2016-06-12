@@ -8,7 +8,6 @@
 
 namespace PhPsst;
 
-use Illuminate\Encryption\Encrypter;
 use PhPsst\Storage\FileStorage;
 
 /**

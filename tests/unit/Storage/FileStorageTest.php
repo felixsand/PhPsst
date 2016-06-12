@@ -83,7 +83,7 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
     public function testInvalidDirPath()
     {
         $this->setExpectedException('RuntimeException', 'Invalid directory path');
-        $fileStorage = new FileStorage(sys_get_temp_dir() . '/' . uniqid(), 1);
+        new FileStorage(sys_get_temp_dir() . '/' . uniqid(), 1);
     }
 
     /**

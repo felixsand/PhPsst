@@ -133,18 +133,13 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
      */
     public function testRetrieveInvalidSecret()
     {
-        $id = uniqid();
-        $key = bin2hex(random_bytes(16));
-        $encryptedPassword = (new Encrypter($key, PhPsst::CIPHER_DEFAULT))->encrypt('secretMessage');
-        $password = new Password('id', $encryptedPassword, 300, 3);
-
         $storageMock = $this->getMockBuilder('PhPsst\Storage\FileStorage')->disableOriginalConstructor()->getMock();
 
         /** @var FileStorage $storageMock */
         $phPsst = new PhPsst($storageMock);
 
         $this->setExpectedException('InvalidArgumentException');
-        $decryptedPassword = $phPsst->retrieve('');
+        $phPsst->retrieve('');
     }
 
     /**
@@ -152,11 +147,6 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
      */
     public function testRetrieveNoPasswordFound()
     {
-        $id = uniqid();
-        $key = bin2hex(random_bytes(16));
-        $encryptedPassword = (new Encrypter($key, PhPsst::CIPHER_DEFAULT))->encrypt('secretMessage');
-        $password = new Password('id', $encryptedPassword, 300, 3);
-
         $storageMock = $this->getMockBuilder('PhPsst\Storage\FileStorage')->disableOriginalConstructor()->getMock();
 
         /** @var FileStorage $storageMock */
