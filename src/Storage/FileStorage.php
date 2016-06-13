@@ -13,7 +13,7 @@ use PhPsst\PhPsstException;
 
 /**
  */
-class FileStorage implements StorageInterface
+class FileStorage extends Storage
 {
     /**
      * @var string
@@ -70,22 +70,9 @@ class FileStorage implements StorageInterface
     public function get($key)
     {
         $password = null;
-        if (!file_exists($this->getFileNameFromKey($key))) {
-            throw new PhPsstException('No such ID exists', PhPsstException::NO_PASSWORD_WITH_ID_FOUND);
-        }
-
-        if (($jsonData = json_decode(file_get_contents($this->getFileNameFromKey($key))))) {
-            if (!empty($jsonData->id)
-                && !empty($jsonData->password)
-                && !empty($jsonData->ttl)
-                && !empty($jsonData->views)
-            ) {
-                $password = new Password($jsonData->id, $jsonData->password, $jsonData->ttl, $jsonData->views);
-                if ($jsonData->ttlTime < time()) {
-                    $this->delete($password);
-                    throw new PhPsstException('No such ID exists', PhPsstException::NO_PASSWORD_WITH_ID_FOUND);
-                }
-            }
+        if (file_exists($this->getFileNameFromKey($key))
+            && ($passwordData = file_get_contents($this->getFileNameFromKey($key)))) {
+            $password = $this->getPasswordFromJson($passwordData);
         }
 
         return $password;
@@ -122,13 +109,7 @@ class FileStorage implements StorageInterface
      */
     protected function writeFile(Password $password)
     {
-        $jsonData = json_encode([
-            'id' => $password->getId(),
-            'password' => $password->getPassword(),
-            'ttl' => $password->getTtl(),
-            'ttlTime' => time() + $password->getTtl(),
-            'views' => $password->getViews(),
-        ]);
+        $jsonData = $this->getJsonFromPassword($password);
 
         $fileName = $this->getFileName($password);
         if (!is_writable(dirname($fileName)) || !file_put_contents($fileName, $jsonData)) {

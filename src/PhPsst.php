@@ -9,7 +9,7 @@
 namespace PhPsst;
 
 use Illuminate\Encryption\Encrypter;
-use PhPsst\Storage\StorageInterface;
+use PhPsst\Storage\Storage;
 
 /**
  * A PHP library for distributing (one time) passwords/secrets in a more secure way.
@@ -19,7 +19,7 @@ use PhPsst\Storage\StorageInterface;
 class PhPsst
 {
     /**
-     * @var StorageInterface
+     * @var Storage
      */
     protected $storage;
 
@@ -35,10 +35,10 @@ class PhPsst
 
     /**
      * PhPsst constructor.
-     * @param StorageInterface $storage
+     * @param Storage $storage
      * @param string $cipher
      */
-    public function __construct(StorageInterface $storage, $cipher = null)
+    public function __construct(Storage $storage, $cipher = null)
     {
         $this->storage = $storage;
         if ($cipher !== null) {
@@ -71,7 +71,7 @@ class PhPsst
         }
 
         $id = uniqid();
-        $key = bin2hex(random_bytes(16));
+        $key = $this->generateKey();
         $encrypter = new Encrypter($key, $this->cipher);
 
         $this->storage->store(new Password($id, $encrypter->encrypt($password), $ttl, $views));
@@ -89,6 +89,7 @@ class PhPsst
             throw new \InvalidArgumentException('Invalid secret');
         }
         list($id, $key) = $idKeyArray;
+        $id = preg_replace("/[^a-zA-Z\d]/", '', $id);
 
         if (!($password = $this->storage->get($id))) {
             throw new PhPsstException('No password with that ID found', PhPsstException::NO_PASSWORD_WITH_ID_FOUND);
@@ -103,5 +104,25 @@ class PhPsst
         }
 
         return $encrypter->decrypt($password->getPassword());
+    }
+
+    /**
+     * @return string
+     */
+    protected function generateKey()
+    {
+        $key = null;
+        switch ($this->cipher) {
+            case 'AES-128-CBC':
+                $key = bin2hex(random_bytes(8));
+                break;
+            case 'AES-256-CBC':
+                $key = bin2hex(random_bytes(16));
+                break;
+            default:
+                throw new \RuntimeException('Only supported ciphers are AES-128-CBC and AES-256-CBC');
+        }
+
+        return $key;
     }
 }
