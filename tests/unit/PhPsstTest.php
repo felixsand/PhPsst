@@ -53,6 +53,38 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers PhPsst\PhPsst::store
+     * @covers PhPsst\PhPsst::generateKey
+     */
+    public function testNonDefaultCipher()
+    {
+        $storageMock = $this->getMockBuilder('PhPsst\Storage\FileStorage')->disableOriginalConstructor()->getMock();
+        $storageMock->expects($this->once())->method('store');
+
+        /** @var FileStorage $storageMock */
+        $phPsst = new PhPsst($storageMock, 'AES-128-CBC');
+        $secret = $phPsst->store('test', 300, 3);
+
+        $this->assertContains(';', $secret);
+    }
+
+    /**
+     * @covers PhPsst\PhPsst::store
+     * @covers PhPsst\PhPsst::generateKey
+     */
+    public function testInvalidCipher()
+    {
+        $storageMock = $this->getMockBuilder('PhPsst\Storage\FileStorage')->disableOriginalConstructor()->getMock();
+
+        /** @var FileStorage $storageMock */
+        $phPsst = new PhPsst($storageMock, 'invalid-cipher');
+
+        $this->setExpectedException('RuntimeException');
+        $phPsst->store('test', 300, 3);
+    }
+
+    /**
+     * @covers PhPsst\PhPsst::store
+     * @covers PhPsst\PhPsst::generateKey
      */
     public function testStore()
     {
