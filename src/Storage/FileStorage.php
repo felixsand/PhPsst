@@ -109,7 +109,7 @@ class FileStorage extends Storage
      */
     protected function writeFile(Password $password)
     {
-        $jsonData = $this->getJsonFromPassword($password);
+        $jsonData = $password->getJson();
 
         $fileName = $this->getFileName($password);
         if (!is_writable(dirname($fileName)) || !file_put_contents($fileName, $jsonData)) {

@@ -39,7 +39,7 @@ class RedisStorage extends Storage
         if (!$allowOverwrite && $this->get($password->getId())) {
             throw new PhPsstException('The ID already exists', PhPsstException::ID_IS_ALREADY_TAKEN);
         }
-        $this->client->set($password->getId(), $this->getJsonFromPassword($password));
+        $this->client->set($password->getId(), $password->getJson());
     }
 
     /**
