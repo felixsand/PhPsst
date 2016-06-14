@@ -29,7 +29,6 @@ abstract class Storage
 
     /**
      * @param Password $password
-     * @return void
      */
     abstract public function delete(Password $password);
 

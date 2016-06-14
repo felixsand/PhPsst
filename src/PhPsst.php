@@ -111,7 +111,6 @@ class PhPsst
      */
     protected function generateKey()
     {
-        $key = null;
         switch ($this->cipher) {
             case 'AES-128-CBC':
                 $key = bin2hex(random_bytes(8));

@@ -53,9 +53,20 @@ class StorageTest extends \PHPUnit_Framework_TestCase
  */
 class TestStorage extends Storage
 {
-    public function get($key) {}
+    /**
+     * @param $key
+     * @return string
+     */
+    public function get($key) { return ''; }
 
+    /**
+     * @param Password $password
+     * @param bool $allowOverwrite
+     */
     public function store(Password $password, $allowOverwrite = false) {}
 
+    /**
+     * @param Password $password
+     */
     public function delete(Password $password) {}
 }

@@ -90,4 +90,18 @@ class Password
             throw new \LogicException('Passwords with negative views should be deleted');
         }
     }
+
+    /**
+     * @return string
+     */
+    public function getJson()
+    {
+        return json_encode([
+            'id' => $this->getId(),
+            'password' => $this->getPassword(),
+            'ttl' => $this->getTtl(),
+            'ttlTime' => time() + $this->getTtl(),
+            'views' => $this->getViews(),
+        ]);
+    }
 }
