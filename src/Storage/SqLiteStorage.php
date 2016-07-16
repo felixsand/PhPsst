@@ -13,7 +13,7 @@ use PhPsst\PhPsstException;
 use SQLite3;
 
 /**
- * @group failing
+ * @author Felix Sandström <http://github.com/felixsand>
  */
 class SqLiteStorage extends Storage
 {
@@ -40,7 +40,10 @@ class SqLiteStorage extends Storage
         $this->gcProbability = $gcProbability;
 
         $this->db = $db;
-        $this->db->enableExceptions(true);
+        if (method_exists(SQLite3::class, 'enableExceptions')) {
+            // Method not available on HHVM
+            $this->db->enableExceptions(true);
+        }
         $sql = <<<'SQL'
 CREATE TABLE IF NOT EXISTS `phPsst` (
   id VARCHAR(13) PRIMARY KEY NOT NULL,

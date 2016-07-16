@@ -11,6 +11,7 @@ namespace PhPsst\Storage;
 use PhPsst\Password;
 
 /**
+ * @author Felix Sandström <http://github.com/felixsand>
  */
 abstract class Storage
 {

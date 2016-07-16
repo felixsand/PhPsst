@@ -13,6 +13,7 @@ use PhPsst\PhPsstException;
 use Predis\Client;
 
 /**
+ * @author Felix Sandström <http://github.com/felixsand>
  */
 class RedisStorage extends Storage
 {

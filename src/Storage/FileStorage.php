@@ -12,6 +12,7 @@ use PhPsst\Password;
 use PhPsst\PhPsstException;
 
 /**
+ * @author Felix Sandström <http://github.com/felixsand>
  */
 class FileStorage extends Storage
 {

@@ -15,7 +15,6 @@ use SQLite3;
 
 /**
  * @author Felix Sandström <http://github.com/felixsand>
- * @group failing
  */
 class SqLiteStorageTest extends \PHPUnit_Framework_TestCase
 {

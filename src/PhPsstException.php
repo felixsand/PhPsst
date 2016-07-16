@@ -9,6 +9,7 @@
 namespace PhPsst;
 
 /**
+ * @author Felix Sandström <http://github.com/felixsand>
  */
 class PhPsstException extends \RuntimeException
 {
