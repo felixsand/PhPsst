@@ -59,7 +59,7 @@ SQL;
     public function store(Password $password, $allowOverwrite = false)
     {
         if ($this->get($password->getId())) {
-            if (! $allowOverwrite) {
+            if (!$allowOverwrite) {
                 throw new PhPsstException('The ID already exists', PhPsstException::ID_IS_ALREADY_TAKEN);
             } else {
                 $this->delete($password);

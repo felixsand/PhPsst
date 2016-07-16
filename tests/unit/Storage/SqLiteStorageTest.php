@@ -104,6 +104,39 @@ class SqLiteStorageTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers PhPsst\Storage\SqLiteStorage::store
      * @covers PhPsst\Storage\SqLiteStorage::garbageCollection
+     */
+    public function testStoreSameIdAllowed()
+    {
+        $db = new SQLite3(':memory:');
+        $storage = new SqLiteStorage($db, 0);
+
+        $passwordId = uniqid();
+        $ttl = strtotime('+1 hour');
+        $password = $this->getMockBuilder(Password::class)->disableOriginalConstructor()
+            ->setMethods(['getId', 'getTtl', 'getViews', 'getPassword'])->getMock();
+        $password->expects($this->atLeastOnce())->method('getId')->willReturn($passwordId);
+        $password->expects($this->atLeastOnce())->method('getTtl')->willReturn($ttl);
+        $password->expects($this->atLeastOnce())->method('getPassword')->willReturn('password');
+        $password->expects($this->atLeastOnce())->method('getViews')->willReturn(10);
+        /* @var Password $password */
+
+        $storage->store($password);
+        $this->assertEquals('password', $storage->get($passwordId)->getPassword());
+
+        $password = $this->getMockBuilder(Password::class)->disableOriginalConstructor()
+            ->setMethods(['getId', 'getTtl', 'getViews', 'getPassword'])->getMock();
+        $password->expects($this->atLeastOnce())->method('getId')->willReturn($passwordId);
+        $password->expects($this->atLeastOnce())->method('getTtl')->willReturn($ttl);
+        $password->expects($this->atLeastOnce())->method('getPassword')->willReturn('password2');
+        $password->expects($this->atLeastOnce())->method('getViews')->willReturn(10);
+        $storage->store($password, true);
+
+        $this->assertEquals('password2', $storage->get($passwordId)->getPassword());
+    }
+
+    /**
+     * @covers PhPsst\Storage\SqLiteStorage::store
+     * @covers PhPsst\Storage\SqLiteStorage::garbageCollection
      * @covers PhPsst\Storage\SqLiteStorage::get
      */
     public function testGet()
