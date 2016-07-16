@@ -97,7 +97,7 @@ class FileStorage extends Storage
         $files = array_diff(scandir($this->dir), array('.', '..'));
         foreach ($files as $file) {
             if (($jsonData = json_decode(file_get_contents($this->dir . $file)))) {
-                if ($jsonData->ttlTime < time()) {
+                if ($jsonData->ttl < time()) {
                     unlink($this->dir . $file);
                 }
             }

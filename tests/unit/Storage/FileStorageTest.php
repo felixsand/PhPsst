@@ -56,7 +56,7 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
         $password->expects($this->atLeast(2))->method('getJson')->willReturn(json_encode([
             'id' => $passwordId,
             'password' => '',
-            'ttl' => 3600,
+            'ttl' => strtotime('+1 hour'),
             'ttlTime' => strtotime('+1 hour'),
             'views' => 1
         ]));
@@ -79,7 +79,7 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
         $password->expects($this->atLeastOnce())->method('getJson')->willReturn(json_encode([
             'id' => $passwordId,
             'password' => '',
-            'ttl' => 3600,
+            'ttl' => strtotime('+1 hour'),
             'ttlTime' => strtotime('+1 hour'),
             'views' => 1
         ]));
@@ -144,7 +144,7 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
         $password->expects($this->atLeastOnce())->method('getJson')->willReturn(json_encode([
             'id' => $passwordId,
             'password' => '',
-            'ttl' => 1,
+            'ttl' => 300,
             'ttlTime' => strtotime('+1 sec'),
             'views' => 1
         ]));
@@ -155,7 +155,7 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
         $passwordTwo->expects($this->atLeastOnce())->method('getJson')->willReturn(json_encode([
             'id' => $passwordTwoId,
             'password' => '',
-            'ttl' => 3600,
+            'ttl' => strtotime('+1 hour'),
             'ttlTime' => strtotime('+1 hour'),
             'views' => 1
         ]));
@@ -199,7 +199,7 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
         $passwordTwo->expects($this->atLeastOnce())->method('getJson')->willReturn(json_encode([
             'id' => $passwordTwoId,
             'password' => '',
-            'ttl' => 3600,
+            'ttl' => strtotime('+1 hour'),
             'ttlTime' => strtotime('+1 hour'),
             'views' => 1
         ]));

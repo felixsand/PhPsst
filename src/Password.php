@@ -100,7 +100,6 @@ class Password
             'id' => $this->getId(),
             'password' => $this->getPassword(),
             'ttl' => $this->getTtl(),
-            'ttlTime' => time() + $this->getTtl(),
             'views' => $this->getViews(),
         ]);
     }

@@ -22,7 +22,7 @@ class RedisStorageTest extends \PHPUnit_Framework_TestCase
      */
     public function testContruct()
     {
-        $clientMock = $this->getMockBuilder(Client::class)->setMethods(['set'])->getMock();
+        $clientMock = $this->getMockBuilder(Client::class)->getMock();
         /* @var Client $clientMock */
 
         $redisStorage = new RedisStorage($clientMock);
@@ -36,9 +36,10 @@ class RedisStorageTest extends \PHPUnit_Framework_TestCase
     public function testStore()
     {
         $clientMock = $this->getMockBuilder(Client::class)
-            ->disableProxyingToOriginalMethods()->setMethods(['set','get'])->getMock();
+            ->disableProxyingToOriginalMethods()->setMethods(['set','get', 'expireat'])->getMock();
         $clientMock->expects($this->once())->method('get')->willReturn(null);
         $clientMock->expects($this->once())->method('set')->willReturn(null);
+        $clientMock->expects($this->once())->method('expireat')->willReturn(null);
         /* @var Client $clientMock */
 
         $redisStorage = new RedisStorage($clientMock);
@@ -55,17 +56,23 @@ class RedisStorageTest extends \PHPUnit_Framework_TestCase
      */
     public function testStoreKeyExists()
     {
-        $password = new Password('secretId', 'password', 300, 3);
+        //$password = new Password('secretId', 'password', strtotime('+3600'), 3);
 
         $clientMock = $this->getMockBuilder(Client::class)
-            ->disableProxyingToOriginalMethods()->setMethods(['set','get'])->getMock();
-        $clientMock->expects($this->once())->method('get')->willReturn($password->getJson());
+            ->disableProxyingToOriginalMethods()->setMethods(['set','get', 'expireat'])->getMock();
+        $clientMock->expects($this->once())->method('get')->willReturn(json_encode([
+            'id' => 'secretId',
+            'password' => 'password',
+            'ttl' => strtotime('+1 hour'),
+            'views' => 1
+        ]));
         /* @var Client $clientMock */
 
         $redisStorage = new RedisStorage($clientMock);
 
-        $password = $this->getMockBuilder(Password::class)->disableOriginalConstructor()->getMock();
-        $password->expects($this->atLeastOnce())->method('getId');
+        $password = $this->getMockBuilder(Password::class)->disableOriginalConstructor()
+            ->setMethods(['getId', 'getTtl'])->getMock();
+        $password->expects($this->atLeastOnce())->method('getId')->willReturn('secretId');
         /* @var Password $password */
 
         $this->expectException(PhPsstException::class);
@@ -82,8 +89,7 @@ class RedisStorageTest extends \PHPUnit_Framework_TestCase
         $clientMock->expects($this->once())->method('get')->willReturn(json_encode([
             'id' => $passwordId,
             'password' => 'password',
-            'ttl' => 3600,
-            'ttlTime' => strtotime('+1 hour'),
+            'ttl' => strtotime('+1 hour'),
             'views' => 10
         ]));
         /* @var Client $clientMock */

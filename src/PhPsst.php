@@ -74,7 +74,7 @@ class PhPsst
         $key = $this->generateKey();
         $encrypter = new Encrypter($key, $this->cipher);
 
-        $this->storage->store(new Password($id, $encrypter->encrypt($password), $ttl, $views));
+        $this->storage->store(new Password($id, $encrypter->encrypt($password), ($ttl + time()), $views));
 
         return $id . ';' . $key;
     }

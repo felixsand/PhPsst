@@ -45,7 +45,7 @@ abstract class Storage
             && !empty($jsonObject->views)
         ) {
             $password = new Password($jsonObject->id, $jsonObject->password, $jsonObject->ttl, $jsonObject->views);
-            if ($jsonObject->ttlTime < time()) {
+            if ($jsonObject->ttl < time()) {
                 $this->delete($password);
                 $password = null;
             }

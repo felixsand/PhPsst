@@ -40,6 +40,7 @@ class RedisStorage extends Storage
             throw new PhPsstException('The ID already exists', PhPsstException::ID_IS_ALREADY_TAKEN);
         }
         $this->client->set($password->getId(), $password->getJson());
+        $this->client->expireat($password->getId(), $password->getTtl());
     }
 
     /**

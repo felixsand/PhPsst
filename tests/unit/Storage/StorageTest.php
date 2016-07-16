@@ -22,7 +22,7 @@ class StorageTest extends \PHPUnit_Framework_TestCase
     {
         $storage = new TestStorage();
 
-        $password = new Password('secretId', 'password', 300, 30);
+        $password = new Password('secretId', 'password', strtotime('+1 hour'), 30);
         $jsonData = $password->getJson();
         $returnedPassword = $storage->getPasswordFromJson($jsonData);
 
@@ -39,7 +39,7 @@ class StorageTest extends \PHPUnit_Framework_TestCase
     {
         $storage = new TestStorage();
 
-        $password = new Password('secretId', 'password', -1, 30);
+        $password = new Password('secretId', 'password', 300, 30);
         $jsonData = $password->getJson();
         $returnedPassword = $storage->getPasswordFromJson($jsonData);
 
