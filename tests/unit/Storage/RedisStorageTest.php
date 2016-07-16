@@ -77,13 +77,20 @@ class RedisStorageTest extends \PHPUnit_Framework_TestCase
      */
     public function testGet()
     {
+        $passwordId = uniqid();
         $clientMock = $this->getMockBuilder(Client::class)->setMethods(['get'])->getMock();
-        $clientMock->expects($this->once())->method('get');
+        $clientMock->expects($this->once())->method('get')->willReturn(json_encode([
+            'id' => $passwordId,
+            'password' => 'password',
+            'ttl' => 3600,
+            'ttlTime' => strtotime('+1 hour'),
+            'views' => 10
+        ]));
         /* @var Client $clientMock */
 
         $redisStorage = new RedisStorage($clientMock);
 
-        $redisStorage->get('secretKey');
+        $this->assertEquals($passwordId, $redisStorage->get('secretKey')->getId());
     }
 
     /**
