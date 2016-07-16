@@ -42,12 +42,35 @@ to try out the library and useful during development. The constructor parameter 
 where 0 disables the GC; 1 means it's run for every file write; 10 means it got a 10% probability of running; etc. It's
 not recommended to turn it off.
 
+```php
+$phPsst = new PhPsst(new FileStorage('data/passwords', 10));
+```
+
 ### RedisStorage
 The recommended production storage class is the RedisStorage. It has great performance even during heavy use and
 since it removes the passwords with expired TTL automatically, it's more secure than the other options.
 It's important to note that if you're not reviewing the Redis configuration, it might purge entries even before the
 item's TTL has expired (if it's memory limit is reached) and the items will only live for as long as the server is
 running. This might be desired properties in certain cases, but you need to be aware of it when setting up the solution.
+
+```php
+$redis = new \Predis\Client(array(
+    'host' => '10.0.0.1',
+    'port' => 6380,
+));
+$phPsst = new PhPsst(new RedisStorage($redis));
+```
+
+### SqLiteStorage
+If you don't have access to Redis, another storage engine that is suitable for production use is the SqLiteStorage. It's
+not as secure as the RedisStorage, mainly because of it's dependency on a GC as well as it's a higher probability that
+the SqLite DB file might be included in backups. It's also not suitable for setups with several webservers without
+access to a shared filesystem. The constructor parameter $gcProbability is the same as for the FileStorage.
+
+```php
+$db = new \SQLite3('path/to/sqlite.db');
+$phPsst = new PhPsst(new SqLiteStorage($db, 10));
+```
 
 ## Requirements
 - PHP 5.6 or above.
