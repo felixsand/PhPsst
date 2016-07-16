@@ -56,5 +56,8 @@ running. This might be desired properties in certain cases, but you need to be a
 ## Author
 Felix Sandström <http://github.com/felixsand>
 
+## Special thanks
+Andreas <http://github.com/jandreasn> for peer review
+
 ## License
 Licensed under the MIT License - see the `LICENSE` file for details.
