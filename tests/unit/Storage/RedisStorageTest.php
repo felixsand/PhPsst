@@ -9,6 +9,8 @@
 namespace PhPsst\Storage;
 
 use PhPsst\Password;
+use PhPsst\PhPsstException;
+use Predis\Client;
 
 /**
  * @author Felix Sandström <http://github.com/felixsand>
@@ -20,10 +22,12 @@ class RedisStorageTest extends \PHPUnit_Framework_TestCase
      */
     public function testContruct()
     {
-        $clientMock = $this->getMockBuilder('Predis\Client')->setMethods(['set'])->getMock();
+        $clientMock = $this->getMockBuilder(Client::class)->setMethods(['set'])->getMock();
+        /* @var Client $clientMock */
+
         $redisStorage = new RedisStorage($clientMock);
 
-        $this->assertInstanceOf('PhPsst\Storage\RedisStorage', $redisStorage);
+        $this->assertInstanceOf(RedisStorage::class, $redisStorage);
     }
 
     /**
@@ -31,14 +35,17 @@ class RedisStorageTest extends \PHPUnit_Framework_TestCase
      */
     public function testStore()
     {
-        $clientMock = $this->getMockBuilder('Predis\Client')
+        $clientMock = $this->getMockBuilder(Client::class)
             ->disableProxyingToOriginalMethods()->setMethods(['set','get'])->getMock();
         $clientMock->expects($this->once())->method('get')->willReturn(null);
         $clientMock->expects($this->once())->method('set')->willReturn(null);
+        /* @var Client $clientMock */
+
         $redisStorage = new RedisStorage($clientMock);
 
-        $password = $this->getMockBuilder('PhPsst\Password')->disableOriginalConstructor()->getMock();
+        $password = $this->getMockBuilder(Password::class)->disableOriginalConstructor()->getMock();
         $password->expects($this->atLeastOnce())->method('getId');
+        /* @var Password $password */
 
         $redisStorage->store($password);
     }
@@ -50,15 +57,18 @@ class RedisStorageTest extends \PHPUnit_Framework_TestCase
     {
         $password = new Password('secretId', 'password', 300, 3);
 
-        $clientMock = $this->getMockBuilder('Predis\Client')
+        $clientMock = $this->getMockBuilder(Client::class)
             ->disableProxyingToOriginalMethods()->setMethods(['set','get'])->getMock();
         $clientMock->expects($this->once())->method('get')->willReturn($password->getJson());
+        /* @var Client $clientMock */
+
         $redisStorage = new RedisStorage($clientMock);
 
-        $password = $this->getMockBuilder('PhPsst\Password')->disableOriginalConstructor()->getMock();
+        $password = $this->getMockBuilder(Password::class)->disableOriginalConstructor()->getMock();
         $password->expects($this->atLeastOnce())->method('getId');
+        /* @var Password $password */
 
-        $this->expectException('PhPsst\PhPsstException');
+        $this->expectException(PhPsstException::class);
         $redisStorage->store($password);
     }
 
@@ -67,8 +77,10 @@ class RedisStorageTest extends \PHPUnit_Framework_TestCase
      */
     public function testGet()
     {
-        $clientMock = $this->getMockBuilder('Predis\Client')->setMethods(['get'])->getMock();
+        $clientMock = $this->getMockBuilder(Client::class)->setMethods(['get'])->getMock();
         $clientMock->expects($this->once())->method('get');
+        /* @var Client $clientMock */
+
         $redisStorage = new RedisStorage($clientMock);
 
         $redisStorage->get('secretKey');
@@ -79,12 +91,16 @@ class RedisStorageTest extends \PHPUnit_Framework_TestCase
      */
     public function testDelete()
     {
-        $clientMock = $this->getMockBuilder('Predis\Client')->setMethods(['del'])->getMock();
+        $clientMock = $this->getMockBuilder(Client::class)->setMethods(['del'])->getMock();
         $clientMock->expects($this->once())->method('del');
+        /* @var Client $clientMock */
+
         $redisStorage = new RedisStorage($clientMock);
 
-        $password = $this->getMockBuilder('PhPsst\Password')->disableOriginalConstructor()->getMock();
+        $password = $this->getMockBuilder(Password::class)->disableOriginalConstructor()->getMock();
         $password->expects($this->once())->method('getId');
+        /* @var Password $password */
+
         $redisStorage->delete($password);
     }
 }

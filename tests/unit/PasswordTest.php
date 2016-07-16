@@ -8,6 +8,8 @@
 
 namespace PhPsst;
 
+use LogicException;
+
 /**
  * @author Felix Sandström <http://github.com/felixsand>
  */
@@ -30,7 +32,7 @@ class PasswordTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
-        $this->assertInstanceOf('PhPsst\Password', $this->password);
+        $this->assertInstanceOf(Password::class, $this->password);
     }
 
     /**
@@ -83,9 +85,23 @@ class PasswordTest extends \PHPUnit_Framework_TestCase
      */
     public function testDecreaseViewsException()
     {
-        $this->setExpectedException('LogicException');
+        $this->expectException(LogicException::class);
         $password = new Password('id', 'password', 123, 1);
         $password->decreaseViews();
         $password->decreaseViews();
+    }
+
+    /**
+     * @covers PhPsst\Password::getJson
+     */
+    public function testGetJson()
+    {
+        $password = new Password('superSecretId', 'superSecretPassword', 123232321244, 983926);
+        $jsonData = $password->getJson();
+
+        $this->assertContains('superSecretId', $jsonData);
+        $this->assertContains('superSecretPassword', $jsonData);
+        $this->assertContains('123232321244', $jsonData);
+        $this->assertContains('983926', $jsonData);
     }
 }

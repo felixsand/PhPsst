@@ -8,8 +8,10 @@
 
 namespace PhPsst\Storage;
 
+use LogicException;
 use PhPsst\Password;
 use PhPsst\PhPsstException;
+use RuntimeException;
 
 /**
  * @author Felix Sandström <http://github.com/felixsand>
@@ -34,7 +36,7 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidContruct()
     {
-        $this->setExpectedException('LogicException');
+        $this->expectException(LogicException::class);
         new FileStorage($this->passwordDirectory, -1);
     }
 
@@ -48,11 +50,16 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
      */
     public function testStore()
     {
-        $password = $this->getMockBuilder('PhPsst\Password')->disableOriginalConstructor()->getMock();
-        $password->expects($this->atLeast(2))->method('getId')->willReturn(uniqid());
-        $password->expects($this->atLeast(2))->method('getPassword');
-        $password->expects($this->atLeast(2))->method('getTtl');
-        $password->expects($this->atLeast(2))->method('getViews');
+        $passwordId = uniqid();
+        $password = $this->getMockBuilder(Password::class)->disableOriginalConstructor()->getMock();
+        $password->expects($this->atLeast(2))->method('getId')->willReturn($passwordId);
+        $password->expects($this->atLeast(2))->method('getJson')->willReturn(json_encode([
+            'id' => $passwordId,
+            'password' => '',
+            'ttl' => 3600,
+            'ttlTime' => strtotime('+1 hour'),
+            'views' => 1
+        ]));
 
         $fileStorage = new FileStorage($this->passwordDirectory, 1);
         /** @var Password $password */
@@ -66,14 +73,23 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
      */
     public function testStoreSameId()
     {
-        $password = $this->getMockBuilder('PhPsst\Password')->disableOriginalConstructor()->getMock();
-        $password->expects($this->atLeastOnce())->method('getId')->willReturn(uniqid());
+        $passwordId = uniqid();
+        $password = $this->getMockBuilder(Password::class)->disableOriginalConstructor()->getMock();
+        $password->expects($this->atLeastOnce())->method('getId')->willReturn($passwordId);
+        $password->expects($this->atLeastOnce())->method('getJson')->willReturn(json_encode([
+            'id' => $passwordId,
+            'password' => '',
+            'ttl' => 3600,
+            'ttlTime' => strtotime('+1 hour'),
+            'views' => 1
+        ]));
 
         $fileStorage = new FileStorage($this->passwordDirectory, 1);
         /** @var Password $password */
         $fileStorage->store($password);
 
-        $this->setExpectedException('PhPsst\PhPsstException', '', PhPsstException::ID_IS_ALREADY_TAKEN);
+        $this->expectException(PhPsstException::class);
+        $this->expectExceptionCode(PhPsstException::ID_IS_ALREADY_TAKEN);
         $fileStorage->store($password);
     }
 
@@ -82,7 +98,8 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidDirPath()
     {
-        $this->setExpectedException('RuntimeException', 'Invalid directory path');
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Invalid directory path');
         new FileStorage(sys_get_temp_dir() . '/' . uniqid(), 1);
     }
 
@@ -95,19 +112,15 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
      */
     public function testNonWriteableDirectory()
     {
-        $password = $this->getMockBuilder('PhPsst\Password')->disableOriginalConstructor()->getMock();
+        $password = $this->getMockBuilder(Password::class)->disableOriginalConstructor()->getMock();
         $password->expects($this->atLeastOnce())->method('getId')->willReturn(uniqid());
-        $password->expects($this->atLeastOnce())->method('getPassword');
-        $password->expects($this->atLeastOnce())->method('getTtl');
-        $password->expects($this->atLeastOnce())->method('getViews');
 
         $invalidDirectory = sys_get_temp_dir() . '/invalidDir' . uniqid();
         mkdir($invalidDirectory, 0);
-        //chmod($invalidDirectory, 0);
         $fileStorage = new FileStorage($invalidDirectory, 1);
 
 
-        $this->setExpectedException('RuntimeException', 'Can not write file');
+        $this->expectException(RuntimeException::class);
         /** @var Password $password */
         $fileStorage->store($password);
 
@@ -125,17 +138,27 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
      */
     public function testGarbageCollector()
     {
-        $password = $this->getMockBuilder('PhPsst\Password')->disableOriginalConstructor()->getMock();
-        $password->expects($this->atLeastOnce())->method('getId')->willReturn(uniqid());
-        $password->expects($this->atLeastOnce())->method('getPassword')->willReturn('secret');
-        $password->expects($this->atLeastOnce())->method('getTtl')->willReturn(1);
-        $password->expects($this->atLeastOnce())->method('getViews')->willReturn(3);
+        $passwordId = uniqid();
+        $password = $this->getMockBuilder(Password::class)->disableOriginalConstructor()->getMock();
+        $password->expects($this->atLeastOnce())->method('getId')->willReturn($passwordId);
+        $password->expects($this->atLeastOnce())->method('getJson')->willReturn(json_encode([
+            'id' => $passwordId,
+            'password' => '',
+            'ttl' => 1,
+            'ttlTime' => strtotime('+1 sec'),
+            'views' => 1
+        ]));
 
-        $passwordTwo = $this->getMockBuilder('PhPsst\Password')->disableOriginalConstructor()->getMock();
-        $passwordTwo->expects($this->atLeastOnce())->method('getId')->willReturn(uniqid());
-        $passwordTwo->expects($this->atLeastOnce())->method('getPassword')->willReturn('secret');
-        $passwordTwo->expects($this->atLeastOnce())->method('getTtl')->willReturn(1);
-        $passwordTwo->expects($this->atLeastOnce())->method('getViews')->willReturn(3);
+        $passwordTwoId = uniqid();
+        $passwordTwo = $this->getMockBuilder(Password::class)->disableOriginalConstructor()->getMock();
+        $passwordTwo->expects($this->atLeastOnce())->method('getId')->willReturn($passwordTwoId);
+        $passwordTwo->expects($this->atLeastOnce())->method('getJson')->willReturn(json_encode([
+            'id' => $passwordTwoId,
+            'password' => '',
+            'ttl' => 3600,
+            'ttlTime' => strtotime('+1 hour'),
+            'views' => 1
+        ]));
         /** @var Password $password */
         /** @var Password $passwordTwo */
 
@@ -159,17 +182,27 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
      */
     public function testGarbageCollectorNotRunning()
     {
-        $password = $this->getMockBuilder('PhPsst\Password')->disableOriginalConstructor()->getMock();
-        $password->expects($this->atLeastOnce())->method('getId')->willReturn(uniqid());
-        $password->expects($this->atLeastOnce())->method('getPassword')->willReturn('secret');
-        $password->expects($this->atLeastOnce())->method('getTtl')->willReturn(1);
-        $password->expects($this->atLeastOnce())->method('getViews')->willReturn(3);
+        $passwordId = uniqid();
+        $password = $this->getMockBuilder(Password::class)->disableOriginalConstructor()->getMock();
+        $password->expects($this->atLeastOnce())->method('getId')->willReturn($passwordId);
+        $password->expects($this->atLeastOnce())->method('getJson')->willReturn(json_encode([
+            'id' => $passwordId,
+            'password' => '',
+            'ttl' => 1,
+            'ttlTime' => strtotime('+1 sec'),
+            'views' => 1
+        ]));
 
-        $passwordTwo = $this->getMockBuilder('PhPsst\Password')->disableOriginalConstructor()->getMock();
-        $passwordTwo->expects($this->atLeastOnce())->method('getId')->willReturn(uniqid());
-        $passwordTwo->expects($this->atLeastOnce())->method('getPassword')->willReturn('secret');
-        $passwordTwo->expects($this->atLeastOnce())->method('getTtl')->willReturn(1);
-        $passwordTwo->expects($this->atLeastOnce())->method('getViews')->willReturn(3);
+        $passwordTwoId = uniqid();
+        $passwordTwo = $this->getMockBuilder(Password::class)->disableOriginalConstructor()->getMock();
+        $passwordTwo->expects($this->atLeastOnce())->method('getId')->willReturn($passwordTwoId);
+        $passwordTwo->expects($this->atLeastOnce())->method('getJson')->willReturn(json_encode([
+            'id' => $passwordTwoId,
+            'password' => '',
+            'ttl' => 3600,
+            'ttlTime' => strtotime('+1 hour'),
+            'views' => 1
+        ]));
         /** @var Password $password */
         /** @var Password $passwordTwo */
 
@@ -179,7 +212,8 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
         $fileStorage->store($passwordTwo);
 
         // Since the GC should NOT have run the file with the same ID should not exist anymore
-        $this->setExpectedException('PhPsst\PhPsstException', '', PhPsstException::ID_IS_ALREADY_TAKEN);
+        $this->expectException(PhPsstException::class);
+        $this->expectExceptionCode(PhPsstException::ID_IS_ALREADY_TAKEN);
         $fileStorage->store($password);
     }
 

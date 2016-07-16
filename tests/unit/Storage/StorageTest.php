@@ -17,14 +17,13 @@ class StorageTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers PhPsst\Storage\Storage::getPasswordFromJson
-     * @covers PhPsst\Storage\Storage::getJsonFromPassword
      */
     public function testGetPasswordFromJson()
     {
         $storage = new TestStorage();
 
         $password = new Password('secretId', 'password', 300, 30);
-        $jsonData = $storage->getJsonFromPassword($password);
+        $jsonData = $password->getJson();
         $returnedPassword = $storage->getPasswordFromJson($jsonData);
 
         $this->assertEquals($password->getId(), $returnedPassword->getId());
@@ -35,14 +34,13 @@ class StorageTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers PhPsst\Storage\Storage::getPasswordFromJson
-     * @covers PhPsst\Storage\Storage::getJsonFromPassword
      */
     public function testDeleteOnExpired()
     {
         $storage = new TestStorage();
 
         $password = new Password('secretId', 'password', -1, 30);
-        $jsonData = $storage->getJsonFromPassword($password);
+        $jsonData = $password->getJson();
         $returnedPassword = $storage->getPasswordFromJson($jsonData);
 
         $this->assertNull($returnedPassword);

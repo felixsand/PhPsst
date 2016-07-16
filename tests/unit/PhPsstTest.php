@@ -9,7 +9,9 @@
 namespace PhPsst;
 
 use Illuminate\Encryption\Encrypter;
+use InvalidArgumentException;
 use PhPsst\Storage\FileStorage;
+use RuntimeException;
 
 /**
  * @author Felix Sandström <http://github.com/felixsand>
@@ -25,7 +27,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $storageMock = $this->getMockBuilder('PhPsst\Storage\FileStorage')->disableOriginalConstructor()->getMock();
+        $storageMock = $this->getMockBuilder(FileStorage::class)->disableOriginalConstructor()->getMock();
 
         /** @var FileStorage $storageMock */
         $this->phPsst = new PhPsst($storageMock);
@@ -36,7 +38,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
-        $this->assertInstanceOf('PhPsst\PhPsst', $this->phPsst);
+        $this->assertInstanceOf(PhPsst::class, $this->phPsst);
     }
 
     /**
@@ -44,11 +46,11 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructWithCipher()
     {
-        $storageMock = $this->getMockBuilder('PhPsst\Storage\FileStorage')->disableOriginalConstructor()->getMock();
+        $storageMock = $this->getMockBuilder(FileStorage::class)->disableOriginalConstructor()->getMock();
 
         /** @var FileStorage $storageMock */
         $phPsst = new PhPsst($storageMock, 'AES-256-CBC');
-        $this->assertInstanceOf('PhPsst\PhPsst', $phPsst);
+        $this->assertInstanceOf(PhPsst::class, $phPsst);
     }
 
     /**
@@ -57,7 +59,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
      */
     public function testNonDefaultCipher()
     {
-        $storageMock = $this->getMockBuilder('PhPsst\Storage\FileStorage')->disableOriginalConstructor()->getMock();
+        $storageMock = $this->getMockBuilder(FileStorage::class)->disableOriginalConstructor()->getMock();
         $storageMock->expects($this->once())->method('store');
 
         /** @var FileStorage $storageMock */
@@ -73,12 +75,12 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidCipher()
     {
-        $storageMock = $this->getMockBuilder('PhPsst\Storage\FileStorage')->disableOriginalConstructor()->getMock();
+        $storageMock = $this->getMockBuilder(FileStorage::class)->disableOriginalConstructor()->getMock();
 
         /** @var FileStorage $storageMock */
         $phPsst = new PhPsst($storageMock, 'invalid-cipher');
 
-        $this->setExpectedException('RuntimeException');
+        $this->expectException(RuntimeException::class);
         $phPsst->store('test', 300, 3);
     }
 
@@ -88,7 +90,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
      */
     public function testStore()
     {
-        $storageMock = $this->getMockBuilder('PhPsst\Storage\FileStorage')->disableOriginalConstructor()->getMock();
+        $storageMock = $this->getMockBuilder(FileStorage::class)->disableOriginalConstructor()->getMock();
         $storageMock->expects($this->once())->method('store');
 
         /** @var FileStorage $storageMock */
@@ -103,12 +105,12 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
      */
     public function testStoreNoKey()
     {
-        $storageMock = $this->getMockBuilder('PhPsst\Storage\FileStorage')->disableOriginalConstructor()->getMock();
+        $storageMock = $this->getMockBuilder(FileStorage::class)->disableOriginalConstructor()->getMock();
 
         /** @var FileStorage $storageMock */
         $phPsst = new PhPsst($storageMock);
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
         $phPsst->store('');
     }
 
@@ -117,12 +119,12 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
      */
     public function testStoreInvalidTtl()
     {
-        $storageMock = $this->getMockBuilder('PhPsst\Storage\FileStorage')->disableOriginalConstructor()->getMock();
+        $storageMock = $this->getMockBuilder(FileStorage::class)->disableOriginalConstructor()->getMock();
 
         /** @var FileStorage $storageMock */
         $phPsst = new PhPsst($storageMock);
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
         $phPsst->store('test', -1);
     }
 
@@ -131,12 +133,12 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
      */
     public function testStoreInvalidViews()
     {
-        $storageMock = $this->getMockBuilder('PhPsst\Storage\FileStorage')->disableOriginalConstructor()->getMock();
+        $storageMock = $this->getMockBuilder(FileStorage::class)->disableOriginalConstructor()->getMock();
 
         /** @var FileStorage $storageMock */
         $phPsst = new PhPsst($storageMock);
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
         $phPsst->store('test', 300, -1);
     }
 
@@ -150,7 +152,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
         $encryptedPassword = (new Encrypter($key, PhPsst::CIPHER_DEFAULT))->encrypt('secretMessage');
         $password = new Password('id', $encryptedPassword, 300, 3);
 
-        $storageMock = $this->getMockBuilder('PhPsst\Storage\FileStorage')->disableOriginalConstructor()->getMock();
+        $storageMock = $this->getMockBuilder(FileStorage::class)->disableOriginalConstructor()->getMock();
         $storageMock->expects($this->once())->method('get')->willReturn($password);
 
         /** @var FileStorage $storageMock */
@@ -165,12 +167,12 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
      */
     public function testRetrieveInvalidSecret()
     {
-        $storageMock = $this->getMockBuilder('PhPsst\Storage\FileStorage')->disableOriginalConstructor()->getMock();
+        $storageMock = $this->getMockBuilder(FileStorage::class)->disableOriginalConstructor()->getMock();
 
         /** @var FileStorage $storageMock */
         $phPsst = new PhPsst($storageMock);
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
         $phPsst->retrieve('');
     }
 
@@ -179,12 +181,13 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
      */
     public function testRetrieveNoPasswordFound()
     {
-        $storageMock = $this->getMockBuilder('PhPsst\Storage\FileStorage')->disableOriginalConstructor()->getMock();
+        $storageMock = $this->getMockBuilder(FileStorage::class)->disableOriginalConstructor()->getMock();
 
         /** @var FileStorage $storageMock */
         $phPsst = new PhPsst($storageMock);
 
-        $this->setExpectedException('PhPsst\PhPsstException', '', PhPsstException::NO_PASSWORD_WITH_ID_FOUND);
+        $this->expectException(PhPsstException::class);
+        $this->expectExceptionCode(PhPsstException::NO_PASSWORD_WITH_ID_FOUND);
         $phPsst->retrieve('id;secret');
     }
 

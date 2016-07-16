@@ -70,7 +70,8 @@ class PhPsstIntegrationTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($password, $phPsst->retrieve($secret));
 
-        $this->setExpectedException('PhPsst\PhPsstException', '', PhPsstException::NO_PASSWORD_WITH_ID_FOUND);
+        $this->expectException(PhPsstException::class);
+        $this->expectExceptionCode(PhPsstException::NO_PASSWORD_WITH_ID_FOUND);
         $phPsst->retrieve($secret);
     }
 
@@ -96,7 +97,8 @@ class PhPsstIntegrationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($password, $phPsst->retrieve($secret));
 
         sleep(2);
-        $this->setExpectedException('PhPsst\PhPsstException', '', PhPsstException::NO_PASSWORD_WITH_ID_FOUND);
+        $this->expectException(PhPsstException::class);
+        $this->expectExceptionCode(PhPsstException::NO_PASSWORD_WITH_ID_FOUND);
         $phPsst->retrieve($secret);
     }
 

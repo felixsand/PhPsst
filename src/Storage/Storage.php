@@ -9,7 +9,6 @@
 namespace PhPsst\Storage;
 
 use PhPsst\Password;
-use PhPsst\PhPsstException;
 
 /**
  */
@@ -53,20 +52,5 @@ abstract class Storage
         }
 
         return $password;
-    }
-
-    /**
-     * @param Password $password
-     * @return string
-     */
-    public function getJsonFromPassword(Password $password)
-    {
-        return json_encode([
-            'id' => $password->getId(),
-            'password' => $password->getPassword(),
-            'ttl' => $password->getTtl(),
-            'ttlTime' => time() + $password->getTtl(),
-            'views' => $password->getViews(),
-        ]);
     }
 }
