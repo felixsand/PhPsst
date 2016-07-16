@@ -63,8 +63,8 @@ $phPsst = new PhPsst(new RedisStorage($redis));
 
 ### SqLiteStorage
 If you don't have access to Redis, another storage engine that is suitable for production use is the SqLiteStorage. It's
-not as secure as the RedisStorage, mainly because of it's dependency on a GC as well as it's a higher probability that
-the SqLite DB file might be included in backups. It's also not suitable for setups with several webservers without
+not as secure as the RedisStorage, mainly because of it's dependency on a GC; as well as the possibility that the
+SqLite DB file might be included in backups, etc. It's also not suitable for setups with several webservers without
 access to a shared filesystem. The constructor parameter $gcProbability is the same as for the FileStorage.
 
 ```php
