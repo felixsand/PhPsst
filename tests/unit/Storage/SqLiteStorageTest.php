@@ -24,9 +24,7 @@ class SqLiteStorageTest extends \PHPUnit_Framework_TestCase
      */
     public function testContruct()
     {
-        $db = $this->getMockBuilder(SQLite3::class)->disableOriginalConstructor()->getMock();
-        /* @var SQLite3 $db */
-
+        $db = new SQLite3(':memory:');
         $storage = new SqLiteStorage($db, 1);
         $this->assertInstanceOf(SqLiteStorage::class, $storage);
     }
@@ -36,9 +34,7 @@ class SqLiteStorageTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructException()
     {
-        $db = $this->getMockBuilder(SQLite3::class)->disableOriginalConstructor()->getMock();
-        /* @var SQLite3 $db */
-
+        $db = new SQLite3(':memory:');
         $this->expectException(LogicException::class);
         $storage = new SqLiteStorage($db, -1);
     }
