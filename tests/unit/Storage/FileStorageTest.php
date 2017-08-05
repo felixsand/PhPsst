@@ -11,12 +11,13 @@ namespace PhPsst\Storage;
 use LogicException;
 use PhPsst\Password;
 use PhPsst\PhPsstException;
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 /**
  * @author Felix Sandström <http://github.com/felixsand>
  */
-class FileStorageTest extends \PHPUnit_Framework_TestCase
+class FileStorageTest extends TestCase
 {
     /**
      * @var string

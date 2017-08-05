@@ -10,12 +10,13 @@ namespace PhPsst\Storage;
 
 use PhPsst\Password;
 use PhPsst\PhPsstException;
+use PHPUnit\Framework\TestCase;
 use Predis\Client;
 
 /**
  * @author Felix Sandström <http://github.com/felixsand>
  */
-class RedisStorageTest extends \PHPUnit_Framework_TestCase
+class RedisStorageTest extends TestCase
 {
     /**
      * @covers PhPsst\Storage\RedisStorage::__construct

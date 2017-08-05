@@ -9,11 +9,12 @@
 namespace PhPsst;
 
 use PhPsst\Storage\FileStorage;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Felix Sandström <http://github.com/felixsand>
  */
-class PhPsstIntegrationTest extends \PHPUnit_Framework_TestCase
+class PhPsstIntegrationTest extends TestCase
 {
     /**
      * @var string

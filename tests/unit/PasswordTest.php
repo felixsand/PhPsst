@@ -9,11 +9,12 @@
 namespace PhPsst;
 
 use LogicException;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Felix Sandström <http://github.com/felixsand>
  */
-class PasswordTest extends \PHPUnit_Framework_TestCase
+class PasswordTest extends TestCase
 {
     /**
      * @var Password

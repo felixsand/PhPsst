@@ -9,11 +9,12 @@
 namespace PhPsst\Storage;
 
 use PhPsst\Password;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Felix Sandström <http://github.com/felixsand>
  */
-class StorageTest extends \PHPUnit_Framework_TestCase
+class StorageTest extends TestCase
 {
     /**
      * @covers PhPsst\Storage\Storage::getPasswordFromJson

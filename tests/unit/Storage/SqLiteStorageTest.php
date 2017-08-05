@@ -11,12 +11,13 @@ namespace PhPsst\Storage;
 use LogicException;
 use PhPsst\Password;
 use PhPsst\PhPsstException;
+use PHPUnit\Framework\TestCase;
 use SQLite3;
 
 /**
  * @author Felix Sandström <http://github.com/felixsand>
  */
-class SqLiteStorageTest extends \PHPUnit_Framework_TestCase
+class SqLiteStorageTest extends TestCase
 {
     /**
      * @covers PhPsst\Storage\SqLiteStorage::__construct

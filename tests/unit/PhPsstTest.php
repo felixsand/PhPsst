@@ -11,12 +11,13 @@ namespace PhPsst;
 use Illuminate\Encryption\Encrypter;
 use InvalidArgumentException;
 use PhPsst\Storage\FileStorage;
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 /**
  * @author Felix Sandström <http://github.com/felixsand>
  */
-class PhPsstTest extends \PHPUnit_Framework_TestCase
+class PhPsstTest extends TestCase
 {
     /**
      * @var PhPsst
