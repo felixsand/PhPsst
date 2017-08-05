@@ -54,20 +54,7 @@ class StorageTest extends TestCase
  */
 class TestStorage extends Storage
 {
-    /**
-     * @param $key
-     * @return string
-     */
-    public function get($key) { return ''; }
-
-    /**
-     * @param Password $password
-     * @param bool $allowOverwrite
-     */
-    public function store(Password $password, $allowOverwrite = false) {}
-
-    /**
-     * @param Password $password
-     */
-    public function delete(Password $password) {}
+    public function get(string $key): ?Password { return null; }
+    public function store(Password $password, bool $allowOverwrite = false): void {}
+    public function delete(Password $password): void {}
 }

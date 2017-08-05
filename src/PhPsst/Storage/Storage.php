@@ -15,28 +15,11 @@ use PhPsst\Password;
  */
 abstract class Storage
 {
-    /**
-     * @param Password $password
-     * @param bool $allowOverwrite
-     */
-    abstract public function store(Password $password, $allowOverwrite = false);
+    abstract public function store(Password $password, bool $allowOverwrite = false): void;
+    abstract public function get(string $key): ?Password;
+    abstract public function delete(Password $password): void;
 
-    /**
-     * @param $key
-     * @return Password|null
-     */
-    abstract public function get($key);
-
-    /**
-     * @param Password $password
-     */
-    abstract public function delete(Password $password);
-
-    /**
-     * @param string $jsonData
-     * @return Password
-     */
-    public function getPasswordFromJson($jsonData)
+    public function getPasswordFromJson(string $jsonData): ?Password
     {
         $password = null;
         if (($jsonObject = json_decode($jsonData))

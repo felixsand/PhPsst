@@ -33,14 +33,7 @@ class Password
      */
     protected $password;
 
-    /**
-     * Password constructor.
-     * @param string $id
-     * @param string $password
-     * @param int $ttl
-     * @param int $views
-     */
-    public function __construct($id, $password, $ttl, $views)
+    public function __construct(string $id, string $password, int $ttl, int $views)
     {
         $this->id = $id;
         $this->password = $password;
@@ -48,41 +41,27 @@ class Password
         $this->views = $views;
     }
 
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->password;
     }
 
-    /**
-     * @return int
-     */
-    public function getTtl()
+    public function getTtl(): int
     {
         return $this->ttl;
     }
 
-    /**
-     * @return int
-     */
-    public function getViews()
+    public function getViews(): int
     {
         return $this->views;
     }
 
-    /**
-     */
-    public function decreaseViews()
+    public function decreaseViews(): void
     {
         if (($this->views - 1) >= 0) {
             $this->views--;
@@ -91,10 +70,7 @@ class Password
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getJson()
+    public function getJson(): string
     {
         return json_encode([
             'id' => $this->getId(),

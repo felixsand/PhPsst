@@ -27,12 +27,7 @@ class SqLiteStorage extends Storage
      */
     protected $db;
 
-    /**
-     * FileStorage constructor.
-     * @param SQLite3 $db
-     * @param int $gcProbability
-     */
-    public function __construct(SQLite3 $db, $gcProbability)
+    public function __construct(SQLite3 $db, int $gcProbability)
     {
         if ($gcProbability < 0) {
             throw new \LogicException('Invalid value for gcProbability');
@@ -55,11 +50,7 @@ SQL;
         $this->db->exec($sql);
     }
 
-    /**
-     * @param Password $password
-     * @param bool $allowOverwrite
-     */
-    public function store(Password $password, $allowOverwrite = false)
+    public function store(Password $password, bool $allowOverwrite = false): void
     {
         if ($this->get($password->getId())) {
             if (!$allowOverwrite) {
@@ -79,11 +70,7 @@ SQL;
         $this->garbageCollection();
     }
 
-    /**
-     * @param $key
-     * @return Password|null
-     */
-    public function get($key)
+    public function get(string $key): ?Password
     {
         $password = null;
 
@@ -101,10 +88,7 @@ SQL;
         return $password;
     }
 
-    /**
-     * @param Password $password
-     */
-    public function delete(Password $password)
+    public function delete(Password $password): void
     {
         $stmt = $this->db->prepare('DELETE FROM phPsst WHERE ID = :id');
         $stmt->bindValue(':id', $password->getId(), SQLITE3_TEXT);
@@ -113,9 +97,7 @@ SQL;
         $this->garbageCollection();
     }
 
-    /**
-     */
-    protected function garbageCollection()
+    protected function garbageCollection(): void
     {
         if (!$this->gcProbability || rand(1, $this->gcProbability) !== 1) {
             return;

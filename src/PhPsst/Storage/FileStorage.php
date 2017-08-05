@@ -31,12 +31,7 @@ class FileStorage extends Storage
      */
     const FILE_SUFFIX = '.phpsst';
 
-    /**
-     * FileStorage constructor.
-     * @param string $dir
-     * @param int $gcProbability
-     */
-    public function __construct($dir, $gcProbability)
+    public function __construct(string $dir, int $gcProbability)
     {
         $dir = rtrim($dir, '/') . '/';
         if (empty($dir) || !is_dir($dir)) {
@@ -51,11 +46,7 @@ class FileStorage extends Storage
         $this->gcProbability = $gcProbability;
     }
 
-    /**
-     * @param Password $password
-     * @param bool $allowOverwrite
-     */
-    public function store(Password $password, $allowOverwrite = false)
+    public function store(Password $password, bool $allowOverwrite = false): void
     {
         if (!$allowOverwrite && file_exists($this->getFileName($password))) {
             throw new PhPsstException('The ID already exists', PhPsstException::ID_IS_ALREADY_TAKEN);
@@ -64,11 +55,7 @@ class FileStorage extends Storage
         $this->writeFile($password);
     }
 
-    /**
-     * @param $key
-     * @return Password|null
-     */
-    public function get($key)
+    public function get(string $key): ?Password
     {
         $password = null;
         if (file_exists($this->getFileNameFromKey($key))
@@ -79,17 +66,12 @@ class FileStorage extends Storage
         return $password;
     }
 
-    /**
-     * @param Password $password
-     */
-    public function delete(Password $password)
+    public function delete(Password $password): void
     {
         unlink($this->getFileName($password));
     }
 
-    /**
-     */
-    protected function garbageCollection()
+    protected function garbageCollection(): void
     {
         if (!$this->gcProbability || rand(1, $this->gcProbability) !== 1) {
             return;
@@ -105,10 +87,7 @@ class FileStorage extends Storage
         }
     }
 
-    /**
-     * @param Password $password
-     */
-    protected function writeFile(Password $password)
+    protected function writeFile(Password $password): void
     {
         $jsonData = $password->getJson();
 
@@ -120,20 +99,12 @@ class FileStorage extends Storage
         $this->garbageCollection();
     }
 
-    /**
-     * @param Password $password
-     * @return string
-     */
-    protected function getFileName(Password $password)
+    protected function getFileName(Password $password): string
     {
         return $this->getFileNameFromKey($password->getId());
     }
 
-    /**
-     * @param string $key
-     * @return string
-     */
-    protected function getFileNameFromKey($key)
+    protected function getFileNameFromKey(string $key): string
     {
         return $this->dir . $key . self::FILE_SUFFIX;
     }
