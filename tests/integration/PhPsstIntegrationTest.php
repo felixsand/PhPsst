@@ -6,8 +6,10 @@
  * @license   MIT
  */
 
-namespace PhPsst;
+namespace PhPsstTest;
 
+use PhPsst\PhPsst;
+use PhPsst\PhPsstException;
 use PhPsst\Storage\FileStorage;
 use PHPUnit\Framework\TestCase;
 
@@ -30,15 +32,15 @@ class PhPsstIntegrationTest extends TestCase
     }
 
     /**
-     * @covers PhPsst\Storage\FileStorage::__construct
-     * @covers PhPsst\Storage\FileStorage::store
-     * @covers PhPsst\Storage\FileStorage::get
-     * @covers PhPsst\Storage\FileStorage::garbageCollection
-     * @covers PhPsst\Storage\FileStorage::writeFile
-     * @covers PhPsst\Password::__construct
-     * @covers PhPsst\PhPsst::__construct
-     * @covers PhPsst\PhPsst::store
-     * @covers PhPsst\PhPsst::retrieve
+     * @covers \PhPsst\Storage\FileStorage::__construct
+     * @covers \PhPsst\Storage\FileStorage::store
+     * @covers \PhPsst\Storage\FileStorage::get
+     * @covers \PhPsst\Storage\FileStorage::garbageCollection
+     * @covers \PhPsst\Storage\FileStorage::writeFile
+     * @covers \PhPsst\Password::__construct
+     * @covers \PhPsst\PhPsst::__construct
+     * @covers \PhPsst\PhPsst::store
+     * @covers \PhPsst\PhPsst::retrieve
      */
     public function testStoreRetrieve()
     {
@@ -51,16 +53,16 @@ class PhPsstIntegrationTest extends TestCase
     }
 
     /**
-     * @covers PhPsst\Storage\FileStorage::__construct
-     * @covers PhPsst\Storage\FileStorage::store
-     * @covers PhPsst\Storage\FileStorage::delete
-     * @covers PhPsst\Storage\FileStorage::get
-     * @covers PhPsst\Storage\FileStorage::garbageCollection
-     * @covers PhPsst\Storage\FileStorage::writeFile
-     * @covers PhPsst\Password::__construct
-     * @covers PhPsst\PhPsst::__construct
-     * @covers PhPsst\PhPsst::store
-     * @covers PhPsst\PhPsst::retrieve
+     * @covers \PhPsst\Storage\FileStorage::__construct
+     * @covers \PhPsst\Storage\FileStorage::store
+     * @covers \PhPsst\Storage\FileStorage::delete
+     * @covers \PhPsst\Storage\FileStorage::get
+     * @covers \PhPsst\Storage\FileStorage::garbageCollection
+     * @covers \PhPsst\Storage\FileStorage::writeFile
+     * @covers \PhPsst\Password::__construct
+     * @covers \PhPsst\PhPsst::__construct
+     * @covers \PhPsst\PhPsst::store
+     * @covers \PhPsst\PhPsst::retrieve
      */
     public function testStoreRetrieveOneView()
     {
@@ -77,16 +79,16 @@ class PhPsstIntegrationTest extends TestCase
     }
 
     /**
-     * @covers PhPsst\Storage\FileStorage::__construct
-     * @covers PhPsst\Storage\FileStorage::store
-     * @covers PhPsst\Storage\FileStorage::delete
-     * @covers PhPsst\Storage\FileStorage::get
-     * @covers PhPsst\Storage\FileStorage::garbageCollection
-     * @covers PhPsst\Storage\FileStorage::writeFile
-     * @covers PhPsst\Password::__construct
-     * @covers PhPsst\PhPsst::__construct
-     * @covers PhPsst\PhPsst::store
-     * @covers PhPsst\PhPsst::retrieve
+     * @covers \PhPsst\Storage\FileStorage::__construct
+     * @covers \PhPsst\Storage\FileStorage::store
+     * @covers \PhPsst\Storage\FileStorage::delete
+     * @covers \PhPsst\Storage\FileStorage::get
+     * @covers \PhPsst\Storage\FileStorage::garbageCollection
+     * @covers \PhPsst\Storage\FileStorage::writeFile
+     * @covers \PhPsst\Password::__construct
+     * @covers \PhPsst\PhPsst::__construct
+     * @covers \PhPsst\PhPsst::store
+     * @covers \PhPsst\PhPsst::retrieve
      */
     public function testStoreRetrieveTtlTimeout()
     {

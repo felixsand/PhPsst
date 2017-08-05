@@ -6,20 +6,22 @@
  * @license   MIT
  */
 
-namespace PhPsst\Storage;
+namespace PhPsstTest\Storage;
 
 use PhPsst\Password;
 use PhPsst\PhPsstException;
+use PhPsst\Storage\RedisStorage;
 use PHPUnit\Framework\TestCase;
 use Predis\Client;
 
 /**
  * @author Felix Sandström <http://github.com/felixsand>
+ * @coversDefaultClass \PhPsst\Storage\RedisStorage
  */
 class RedisStorageTest extends TestCase
 {
     /**
-     * @covers PhPsst\Storage\RedisStorage::__construct
+     * @covers ::__construct
      */
     public function testContruct()
     {
@@ -32,7 +34,7 @@ class RedisStorageTest extends TestCase
     }
 
     /**
-     * @covers PhPsst\Storage\RedisStorage::store
+     * @covers ::store
      */
     public function testStore()
     {
@@ -53,7 +55,7 @@ class RedisStorageTest extends TestCase
     }
 
     /**
-     * @covers PhPsst\Storage\RedisStorage::store
+     * @covers ::store
      */
     public function testStoreKeyExists()
     {
@@ -81,7 +83,7 @@ class RedisStorageTest extends TestCase
     }
 
     /**
-     * @covers PhPsst\Storage\RedisStorage::get
+     * @covers ::get
      */
     public function testGet()
     {
@@ -101,7 +103,7 @@ class RedisStorageTest extends TestCase
     }
 
     /**
-     * @covers PhPsst\Storage\RedisStorage::delete
+     * @covers ::delete
      */
     public function testDelete()
     {
