@@ -6,14 +6,17 @@
  * @license   MIT
  */
 
-namespace PhPsst;
+namespace PhPsstTest;
 
 use LogicException;
+use PhPsst\Password;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Felix Sandström <http://github.com/felixsand>
+ * @coversDefaultClass \PhPsst\Password
  */
-class PasswordTest extends \PHPUnit_Framework_TestCase
+class PasswordTest extends TestCase
 {
     /**
      * @var Password
@@ -28,7 +31,7 @@ class PasswordTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Password::__construct
+     * @covers ::__construct
      */
     public function testConstruct()
     {
@@ -36,7 +39,7 @@ class PasswordTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Password::getId
+     * @covers ::getId
      */
     public function testGetId()
     {
@@ -44,7 +47,7 @@ class PasswordTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Password::getPassword
+     * @covers ::getPassword
      */
     public function testGetPassword()
     {
@@ -52,7 +55,7 @@ class PasswordTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Password::getTtl
+     * @covers ::getTtl
      */
     public function testGetTtl()
     {
@@ -60,7 +63,7 @@ class PasswordTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Password::getViews
+     * @covers ::getViews
      */
     public function testGetViews()
     {
@@ -68,7 +71,7 @@ class PasswordTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Password::decreaseViews
+     * @covers ::decreaseViews
      */
     public function testDecreaseViews()
     {
@@ -81,7 +84,7 @@ class PasswordTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Password::decreaseViews
+     * @covers ::decreaseViews
      */
     public function testDecreaseViewsException()
     {
@@ -92,7 +95,7 @@ class PasswordTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Password::getJson
+     * @covers ::getJson
      */
     public function testGetJson()
     {

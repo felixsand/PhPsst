@@ -33,12 +33,7 @@ class PhPsst
      */
     const CIPHER_DEFAULT = 'AES-256-CBC';
 
-    /**
-     * PhPsst constructor.
-     * @param Storage $storage
-     * @param string $cipher
-     */
-    public function __construct(Storage $storage, $cipher = null)
+    public function __construct(Storage $storage, string $cipher = null)
     {
         $this->storage = $storage;
         if ($cipher !== null) {
@@ -48,13 +43,7 @@ class PhPsst
         }
     }
 
-    /**
-     * @param string $password
-     * @param int $ttl
-     * @param int $views
-     * @return string
-     */
-    public function store($password, $ttl = 3600, $views = 1)
+    public function store(string $password, int $ttl = 3600, int $views = 1): string
     {
         if (empty($password)) {
             throw new \InvalidArgumentException('The password has to be set');
@@ -79,11 +68,7 @@ class PhPsst
         return $id . ';' . $key;
     }
 
-    /**
-     * @param $secret
-     * @return string
-     */
-    public function retrieve($secret)
+    public function retrieve(string $secret): string
     {
         if (!($idKeyArray = explode(';', $secret)) || count($idKeyArray) != 2) {
             throw new \InvalidArgumentException('Invalid secret');
@@ -106,10 +91,7 @@ class PhPsst
         return $encrypter->decrypt($password->getPassword());
     }
 
-    /**
-     * @return string
-     */
-    protected function generateKey()
+    protected function generateKey(): string
     {
         switch ($this->cipher) {
             case 'AES-128-CBC':

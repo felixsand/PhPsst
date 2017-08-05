@@ -6,20 +6,23 @@
  * @license   MIT
  */
 
-namespace PhPsst\Storage;
+namespace PhPsstTest\Storage;
 
 use LogicException;
 use PhPsst\Password;
 use PhPsst\PhPsstException;
+use PhPsst\Storage\SqLiteStorage;
+use PHPUnit\Framework\TestCase;
 use SQLite3;
 
 /**
  * @author Felix Sandström <http://github.com/felixsand>
+ * @coversDefaultClass \PhPsst\Storage\SqLiteStorage
  */
-class SqLiteStorageTest extends \PHPUnit_Framework_TestCase
+class SqLiteStorageTest extends TestCase
 {
     /**
-     * @covers PhPsst\Storage\SqLiteStorage::__construct
+     * @covers ::__construct
      */
     public function testContruct()
     {
@@ -29,18 +32,18 @@ class SqLiteStorageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Storage\SqLiteStorage::__construct
+     * @covers ::__construct
      */
     public function testConstructException()
     {
         $db = new SQLite3(':memory:');
         $this->expectException(LogicException::class);
-        $storage = new SqLiteStorage($db, -1);
+        new SqLiteStorage($db, -1);
     }
 
     /**
-     * @covers PhPsst\Storage\SqLiteStorage::store
-     * @covers PhPsst\Storage\SqLiteStorage::garbageCollection
+     * @covers ::store
+     * @covers ::garbageCollection
      */
     public function testStore()
     {
@@ -71,8 +74,8 @@ class SqLiteStorageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Storage\SqLiteStorage::store
-     * @covers PhPsst\Storage\SqLiteStorage::garbageCollection
+     * @covers ::store
+     * @covers ::garbageCollection
      */
     public function testStoreSameId()
     {
@@ -97,8 +100,8 @@ class SqLiteStorageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Storage\SqLiteStorage::store
-     * @covers PhPsst\Storage\SqLiteStorage::garbageCollection
+     * @covers ::store
+     * @covers ::garbageCollection
      */
     public function testStoreSameIdAllowed()
     {
@@ -111,28 +114,27 @@ class SqLiteStorageTest extends \PHPUnit_Framework_TestCase
             ->setMethods(['getId', 'getTtl', 'getViews', 'getPassword'])->getMock();
         $password->expects($this->atLeastOnce())->method('getId')->willReturn($passwordId);
         $password->expects($this->atLeastOnce())->method('getTtl')->willReturn($ttl);
-        $password->expects($this->atLeastOnce())->method('getPassword')->willReturn('password');
         $password->expects($this->atLeastOnce())->method('getViews')->willReturn(10);
+        $password2 = clone $password;
+
+        $password->expects($this->atLeastOnce())->method('getPassword')->willReturn('password');
+        $password2->expects($this->atLeastOnce())->method('getPassword')->willReturn('password2');
         /* @var Password $password */
+        /* @var Password $password2 */
 
         $storage->store($password);
         $this->assertEquals('password', $storage->get($passwordId)->getPassword());
 
-        $password = $this->getMockBuilder(Password::class)->disableOriginalConstructor()
-            ->setMethods(['getId', 'getTtl', 'getViews', 'getPassword'])->getMock();
-        $password->expects($this->atLeastOnce())->method('getId')->willReturn($passwordId);
-        $password->expects($this->atLeastOnce())->method('getTtl')->willReturn($ttl);
-        $password->expects($this->atLeastOnce())->method('getPassword')->willReturn('password2');
-        $password->expects($this->atLeastOnce())->method('getViews')->willReturn(10);
-        $storage->store($password, true);
+
+        $storage->store($password2, true);
 
         $this->assertEquals('password2', $storage->get($passwordId)->getPassword());
     }
 
     /**
-     * @covers PhPsst\Storage\SqLiteStorage::store
-     * @covers PhPsst\Storage\SqLiteStorage::garbageCollection
-     * @covers PhPsst\Storage\SqLiteStorage::get
+     * @covers ::store
+     * @covers ::garbageCollection
+     * @covers ::get
      */
     public function testGet()
     {
@@ -159,10 +161,10 @@ class SqLiteStorageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Storage\SqLiteStorage::store
-     * @covers PhPsst\Storage\SqLiteStorage::garbageCollection
-     * @covers PhPsst\Storage\SqLiteStorage::get
-     * @covers PhPsst\Storage\SqLiteStorage::delete
+     * @covers ::store
+     * @covers ::garbageCollection
+     * @covers ::get
+     * @covers ::delete
      */
     public function testDelete()
     {
@@ -187,10 +189,10 @@ class SqLiteStorageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Storage\SqLiteStorage::store
-     * @covers PhPsst\Storage\SqLiteStorage::garbageCollection
-     * @covers PhPsst\Storage\SqLiteStorage::get
-     * @covers PhPsst\Storage\SqLiteStorage::delete
+     * @covers ::store
+     * @covers ::garbageCollection
+     * @covers ::get
+     * @covers ::delete
      */
     public function testDeleteOtherId()
     {
@@ -220,9 +222,9 @@ class SqLiteStorageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Storage\SqLiteStorage::store
-     * @covers PhPsst\Storage\SqLiteStorage::get
-     * @covers PhPsst\Storage\SqLiteStorage::garbageCollection
+     * @covers ::store
+     * @covers ::get
+     * @covers ::garbageCollection
      */
     public function testGarbageCollection()
     {

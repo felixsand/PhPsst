@@ -6,25 +6,26 @@
  * @license   MIT
  */
 
-namespace PhPsst\Storage;
+namespace PhPsstTest\Storage;
 
 use LogicException;
 use PhPsst\Password;
 use PhPsst\PhPsstException;
+use PhPsst\Storage\FileStorage;
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 /**
  * @author Felix Sandström <http://github.com/felixsand>
+ * @coversDefaultClass \PhPsst\Storage\FileStorage
  */
-class FileStorageTest extends \PHPUnit_Framework_TestCase
+class FileStorageTest extends TestCase
 {
     /**
      * @var string
      */
     private $passwordDirectory;
 
-    /**
-     */
     public function setUp()
     {
         $this->passwordDirectory = sys_get_temp_dir() . '/PhPsstUnitTest';
@@ -32,7 +33,7 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Storage\FileStorage::__construct
+     * @covers ::__construct
      */
     public function testInvalidContruct()
     {
@@ -41,12 +42,12 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Storage\FileStorage::__construct
-     * @covers PhPsst\Storage\FileStorage::store
-     * @covers PhPsst\Storage\FileStorage::garbageCollection
-     * @covers PhPsst\Storage\FileStorage::writeFile
-     * @covers PhPsst\Storage\FileStorage::getFileName
-     * @covers PhPsst\Storage\FileStorage::getFileNameFromKey
+     * @covers ::__construct
+     * @covers ::store
+     * @covers ::garbageCollection
+     * @covers ::writeFile
+     * @covers ::getFileName
+     * @covers ::getFileNameFromKey
      */
     public function testStore()
     {
@@ -68,8 +69,8 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Storage\FileStorage::__construct
-     * @covers PhPsst\Storage\FileStorage::store
+     * @covers ::__construct
+     * @covers ::store
      */
     public function testStoreSameId()
     {
@@ -94,7 +95,7 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Storage\FileStorage::__construct
+     * @covers ::__construct
      */
     public function testInvalidDirPath()
     {
@@ -104,11 +105,11 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Storage\FileStorage::__construct
-     * @covers PhPsst\Storage\FileStorage::store
-     * @covers PhPsst\Storage\FileStorage::writeFile
-     * @covers PhPsst\Storage\FileStorage::getFileName
-     * @covers PhPsst\Storage\FileStorage::getFileNameFromKey
+     * @covers ::__construct
+     * @covers ::store
+     * @covers ::writeFile
+     * @covers ::getFileName
+     * @covers ::getFileNameFromKey
      */
     public function testNonWriteableDirectory()
     {
@@ -128,13 +129,13 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Storage\FileStorage::__construct
-     * @covers PhPsst\Storage\FileStorage::store
-     * @covers PhPsst\Storage\FileStorage::garbageCollection
-     * @covers PhPsst\Storage\FileStorage::writeFile
-     * @covers PhPsst\Storage\FileStorage::getFileName
-     * @covers PhPsst\Storage\FileStorage::getFileNameFromKey
-     * @covers PhPsst\Storage\FileStorage::delete
+     * @covers ::__construct
+     * @covers ::store
+     * @covers ::garbageCollection
+     * @covers ::writeFile
+     * @covers ::getFileName
+     * @covers ::getFileNameFromKey
+     * @covers ::delete
      */
     public function testGarbageCollector()
     {
@@ -172,13 +173,13 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Storage\FileStorage::__construct
-     * @covers PhPsst\Storage\FileStorage::store
-     * @covers PhPsst\Storage\FileStorage::garbageCollection
-     * @covers PhPsst\Storage\FileStorage::writeFile
-     * @covers PhPsst\Storage\FileStorage::getFileName
-     * @covers PhPsst\Storage\FileStorage::getFileNameFromKey
-     * @covers PhPsst\Storage\FileStorage::delete
+     * @covers ::__construct
+     * @covers ::store
+     * @covers ::garbageCollection
+     * @covers ::writeFile
+     * @covers ::getFileName
+     * @covers ::getFileNameFromKey
+     * @covers ::delete
      */
     public function testGarbageCollectorNotRunning()
     {
@@ -217,8 +218,6 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
         $fileStorage->store($password);
     }
 
-    /**
-     */
     public function tearDown()
     {
         array_map('unlink', glob("$this->passwordDirectory/*.phpsst"));

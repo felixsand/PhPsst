@@ -6,17 +6,20 @@
  * @license   MIT
  */
 
-namespace PhPsst\Storage;
+namespace PhPsstTest\Storage;
 
 use PhPsst\Password;
+use PhPsst\Storage\Storage;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Felix Sandström <http://github.com/felixsand>
+ * @coversDefaultClass \PhPsst\Storage\Storage
  */
-class StorageTest extends \PHPUnit_Framework_TestCase
+class StorageTest extends TestCase
 {
     /**
-     * @covers PhPsst\Storage\Storage::getPasswordFromJson
+     * @covers ::getPasswordFromJson
      */
     public function testGetPasswordFromJson()
     {
@@ -33,7 +36,7 @@ class StorageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\Storage\Storage::getPasswordFromJson
+     * @covers ::getPasswordFromJson
      */
     public function testDeleteOnExpired()
     {
@@ -47,24 +50,18 @@ class StorageTest extends \PHPUnit_Framework_TestCase
     }
 }
 
-/**
- */
 class TestStorage extends Storage
 {
-    /**
-     * @param $key
-     * @return string
-     */
-    public function get($key) { return ''; }
+    public function get(string $key): ?Password
+    {
+        return null;
+    }
 
-    /**
-     * @param Password $password
-     * @param bool $allowOverwrite
-     */
-    public function store(Password $password, $allowOverwrite = false) {}
+    public function store(Password $password, bool $allowOverwrite = false): void
+    {
+    }
 
-    /**
-     * @param Password $password
-     */
-    public function delete(Password $password) {}
+    public function delete(Password $password): void
+    {
+    }
 }

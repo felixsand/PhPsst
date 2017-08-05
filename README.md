@@ -74,7 +74,7 @@ $phPsst = new PhPsst(new SqLiteStorage($db, 10));
 ```
 
 ## Requirements
-- PHP 5.6 or above.
+- PHP 7.1 or above.
 - Redis (for the Redis Storage)
 
 ## Author

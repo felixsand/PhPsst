@@ -6,25 +6,28 @@
  * @license   MIT
  */
 
-namespace PhPsst;
+namespace PhPsstTest;
 
 use Illuminate\Encryption\Encrypter;
 use InvalidArgumentException;
+use PhPsst\Password;
+use PhPsst\PhPsst;
+use PhPsst\PhPsstException;
 use PhPsst\Storage\FileStorage;
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 /**
  * @author Felix Sandström <http://github.com/felixsand>
+ * @coversDefaultClass \PhPsst\PhPsst
  */
-class PhPsstTest extends \PHPUnit_Framework_TestCase
+class PhPsstTest extends TestCase
 {
     /**
      * @var PhPsst
      */
     private $phPsst;
 
-    /**
-     */
     public function setUp()
     {
         $storageMock = $this->getMockBuilder(FileStorage::class)->disableOriginalConstructor()->getMock();
@@ -34,7 +37,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\PhPsst::__construct
+     * @covers ::__construct
      */
     public function testConstruct()
     {
@@ -42,7 +45,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\PhPsst::__construct
+     * @covers ::__construct
      */
     public function testConstructWithCipher()
     {
@@ -54,8 +57,8 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\PhPsst::store
-     * @covers PhPsst\PhPsst::generateKey
+     * @covers ::store
+     * @covers ::generateKey
      */
     public function testNonDefaultCipher()
     {
@@ -70,8 +73,8 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\PhPsst::store
-     * @covers PhPsst\PhPsst::generateKey
+     * @covers ::store
+     * @covers ::generateKey
      */
     public function testInvalidCipher()
     {
@@ -85,8 +88,8 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\PhPsst::store
-     * @covers PhPsst\PhPsst::generateKey
+     * @covers ::store
+     * @covers ::generateKey
      */
     public function testStore()
     {
@@ -101,7 +104,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\PhPsst::store
+     * @covers ::store
      */
     public function testStoreNoKey()
     {
@@ -115,7 +118,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\PhPsst::store
+     * @covers ::store
      */
     public function testStoreInvalidTtl()
     {
@@ -129,7 +132,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\PhPsst::store
+     * @covers ::store
      */
     public function testStoreInvalidViews()
     {
@@ -143,7 +146,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\PhPsst::retrieve
+     * @covers ::retrieve
      */
     public function testRetrieve()
     {
@@ -163,7 +166,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\PhPsst::retrieve
+     * @covers ::retrieve
      */
     public function testRetrieveInvalidSecret()
     {
@@ -177,7 +180,7 @@ class PhPsstTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhPsst\PhPsst::retrieve
+     * @covers ::retrieve
      */
     public function testRetrieveNoPasswordFound()
     {

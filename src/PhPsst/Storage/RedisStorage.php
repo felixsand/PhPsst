@@ -22,20 +22,12 @@ class RedisStorage extends Storage
      */
     protected $client;
 
-    /**
-     * RedisStorage constructor.
-     * @param Client $client
-     */
     public function __construct(Client $client)
     {
         $this->client = $client;
     }
 
-    /**
-     * @param Password $password
-     * @param bool $allowOverwrite
-     */
-    public function store(Password $password, $allowOverwrite = false)
+    public function store(Password $password, bool $allowOverwrite = false): void
     {
         if (!$allowOverwrite && $this->get($password->getId())) {
             throw new PhPsstException('The ID already exists', PhPsstException::ID_IS_ALREADY_TAKEN);
@@ -44,11 +36,7 @@ class RedisStorage extends Storage
         $this->client->expireat($password->getId(), $password->getTtl());
     }
 
-    /**
-     * @param $key
-     * @return Password|null
-     */
-    public function get($key)
+    public function get(string $key): ?Password
     {
         $password = null;
         if (($passwordData = $this->client->get($key))) {
@@ -58,11 +46,8 @@ class RedisStorage extends Storage
         return $password;
     }
 
-    /**
-     * @param Password $password
-     */
-    public function delete(Password $password)
+    public function delete(Password $password): void
     {
-        $this->client->del($password->getId());
+        $this->client->del([$password->getId()]);
     }
 }
