@@ -15,8 +15,7 @@
     "require": {
         "php": ">=7.1",
         "predis/predis": "~1.1",
-        "Illuminate/Encryption": "~5.4",
-        "paragonie/random_compat": "~2.0"
+        "Illuminate/Encryption": "~5.4"
     },
     "require-dev": {
       "phpunit/phpunit": "~6.3"
