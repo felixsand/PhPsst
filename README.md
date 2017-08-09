@@ -77,6 +77,10 @@ $phPsst = new PhPsst(new SqLiteStorage($db, 10));
 - PHP 7.1 or above.
 - Redis (for the Redis Storage)
 
+## Demo
+- Docker `docker run -p 80:80 felixsand/phpsst`
+- See: [github.com/felixsand/phpsst-demo](https://github.com/felixsand/phpsst-demo)
+
 ## Author
 Felix Sandström <http://github.com/felixsand>
 
