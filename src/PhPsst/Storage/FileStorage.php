@@ -77,12 +77,12 @@ class FileStorage extends Storage
             return;
         }
 
-        $files = array_diff(scandir($this->dir), array('.', '..'));
+        $files = array_diff(scandir($this->dir, SCANDIR_SORT_NONE), array('.', '..'));
         foreach ($files as $file) {
-            if (($jsonData = json_decode(file_get_contents($this->dir . $file)))) {
-                if ($jsonData->ttl < time()) {
-                    unlink($this->dir . $file);
-                }
+            $fileContent = file_get_contents($this->dir . $file);
+            $jsonData = json_decode($fileContent);
+            if ($jsonData && $jsonData->ttl < time()) {
+                unlink($this->dir . $file);
             }
         }
     }

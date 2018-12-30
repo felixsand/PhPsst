@@ -68,7 +68,8 @@ class PhPsst
 
     public function retrieve(string $secret): string
     {
-        if (!($idKeyArray = explode(';', $secret)) || \count($idKeyArray) != 2) {
+        $idKeyArray = explode(';', $secret);
+        if (\count($idKeyArray) !== 2) {
             throw new \InvalidArgumentException('Invalid secret');
         }
         [$id, $key] = $idKeyArray;
