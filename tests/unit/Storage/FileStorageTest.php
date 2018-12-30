@@ -2,7 +2,7 @@
 /**
  * PhPsst.
  *
- * @copyright Copyright (c) 2016 Felix Sandström
+ * @copyright Copyright (c) 2018 Felix Sandström
  * @license   MIT
  */
 
@@ -35,7 +35,7 @@ class FileStorageTest extends TestCase
     /**
      * @covers ::__construct
      */
-    public function testInvalidContruct()
+    public function testInvalidContruct(): void
     {
         $this->expectException(LogicException::class);
         new FileStorage($this->passwordDirectory, -1);
@@ -49,9 +49,9 @@ class FileStorageTest extends TestCase
      * @covers ::getFileName
      * @covers ::getFileNameFromKey
      */
-    public function testStore()
+    public function testStore(): void
     {
-        $passwordId = uniqid();
+        $passwordId = uniqid('', false);
         $password = $this->getMockBuilder(Password::class)->disableOriginalConstructor()->getMock();
         $password->expects($this->atLeast(2))->method('getId')->willReturn($passwordId);
         $password->expects($this->atLeast(2))->method('getJson')->willReturn(json_encode([
@@ -72,9 +72,9 @@ class FileStorageTest extends TestCase
      * @covers ::__construct
      * @covers ::store
      */
-    public function testStoreSameId()
+    public function testStoreSameId(): void
     {
-        $passwordId = uniqid();
+        $passwordId = uniqid('', false);
         $password = $this->getMockBuilder(Password::class)->disableOriginalConstructor()->getMock();
         $password->expects($this->atLeastOnce())->method('getId')->willReturn($passwordId);
         $password->expects($this->atLeastOnce())->method('getJson')->willReturn(json_encode([
@@ -97,11 +97,11 @@ class FileStorageTest extends TestCase
     /**
      * @covers ::__construct
      */
-    public function testInvalidDirPath()
+    public function testInvalidDirPath(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Invalid directory path');
-        new FileStorage(sys_get_temp_dir() . '/' . uniqid(), 1);
+        new FileStorage(sys_get_temp_dir() . '/' . uniqid('', false), 1);
     }
 
     /**
@@ -111,12 +111,12 @@ class FileStorageTest extends TestCase
      * @covers ::getFileName
      * @covers ::getFileNameFromKey
      */
-    public function testNonWriteableDirectory()
+    public function testNonWriteableDirectory(): void
     {
         $password = $this->getMockBuilder(Password::class)->disableOriginalConstructor()->getMock();
-        $password->expects($this->atLeastOnce())->method('getId')->willReturn(uniqid());
+        $password->expects($this->atLeastOnce())->method('getId')->willReturn(uniqid('', false));
 
-        $invalidDirectory = sys_get_temp_dir() . '/invalidDir' . uniqid();
+        $invalidDirectory = sys_get_temp_dir() . '/invalidDir' . uniqid('', false);
         mkdir($invalidDirectory, 0);
         $fileStorage = new FileStorage($invalidDirectory, 1);
 
@@ -137,9 +137,9 @@ class FileStorageTest extends TestCase
      * @covers ::getFileNameFromKey
      * @covers ::delete
      */
-    public function testGarbageCollector()
+    public function testGarbageCollector(): void
     {
-        $passwordId = uniqid();
+        $passwordId = uniqid('', false);
         $password = $this->getMockBuilder(Password::class)->disableOriginalConstructor()->getMock();
         $password->expects($this->atLeastOnce())->method('getId')->willReturn($passwordId);
         $password->expects($this->atLeastOnce())->method('getJson')->willReturn(json_encode([
@@ -150,7 +150,7 @@ class FileStorageTest extends TestCase
             'views' => 1
         ]));
 
-        $passwordTwoId = uniqid();
+        $passwordTwoId = uniqid('', false);
         $passwordTwo = $this->getMockBuilder(Password::class)->disableOriginalConstructor()->getMock();
         $passwordTwo->expects($this->atLeastOnce())->method('getId')->willReturn($passwordTwoId);
         $passwordTwo->expects($this->atLeastOnce())->method('getJson')->willReturn(json_encode([
@@ -181,9 +181,9 @@ class FileStorageTest extends TestCase
      * @covers ::getFileNameFromKey
      * @covers ::delete
      */
-    public function testGarbageCollectorNotRunning()
+    public function testGarbageCollectorNotRunning(): void
     {
-        $passwordId = uniqid();
+        $passwordId = uniqid('', false);
         $password = $this->getMockBuilder(Password::class)->disableOriginalConstructor()->getMock();
         $password->expects($this->atLeastOnce())->method('getId')->willReturn($passwordId);
         $password->expects($this->atLeastOnce())->method('getJson')->willReturn(json_encode([
@@ -194,7 +194,7 @@ class FileStorageTest extends TestCase
             'views' => 1
         ]));
 
-        $passwordTwoId = uniqid();
+        $passwordTwoId = uniqid('', false);
         $passwordTwo = $this->getMockBuilder(Password::class)->disableOriginalConstructor()->getMock();
         $passwordTwo->expects($this->atLeastOnce())->method('getId')->willReturn($passwordTwoId);
         $passwordTwo->expects($this->atLeastOnce())->method('getJson')->willReturn(json_encode([

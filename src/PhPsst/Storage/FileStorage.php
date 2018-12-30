@@ -2,7 +2,7 @@
 /**
  * PhPsst.
  *
- * @copyright Copyright (c) 2016 Felix Sandström
+ * @copyright Copyright (c) 2018 Felix Sandström
  * @license   MIT
  */
 
@@ -29,7 +29,7 @@ class FileStorage extends Storage
     /**
      * @const string
      */
-    const FILE_SUFFIX = '.phpsst';
+    private const FILE_SUFFIX = '.phpsst';
 
     public function __construct(string $dir, int $gcProbability)
     {
@@ -77,12 +77,12 @@ class FileStorage extends Storage
             return;
         }
 
-        $files = array_diff(scandir($this->dir), array('.', '..'));
+        $files = array_diff(scandir($this->dir, SCANDIR_SORT_NONE), array('.', '..'));
         foreach ($files as $file) {
-            if (($jsonData = json_decode(file_get_contents($this->dir . $file)))) {
-                if ($jsonData->ttl < time()) {
-                    unlink($this->dir . $file);
-                }
+            $fileContent = file_get_contents($this->dir . $file);
+            $jsonData = json_decode($fileContent);
+            if ($jsonData && $jsonData->ttl < time()) {
+                unlink($this->dir . $file);
             }
         }
     }
@@ -92,7 +92,7 @@ class FileStorage extends Storage
         $jsonData = $password->getJson();
 
         $fileName = $this->getFileName($password);
-        if (!is_writable(dirname($fileName)) || !file_put_contents($fileName, $jsonData)) {
+        if (!is_writable(\dirname($fileName)) || !file_put_contents($fileName, $jsonData)) {
             throw new \RuntimeException('Can not write file');
         }
 

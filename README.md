@@ -5,7 +5,6 @@
 [![License](https://poser.pugx.org/felixsand/phpsst/license)](https://packagist.org/packages/felixsand/phpsst)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/felixsand/PhPsst/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/felixsand/PhPsst/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/felixsand/PhPsst/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/felixsand/PhPsst/?branch=master)
-[![Dependency Status](https://www.versioneye.com/php/felixsand:phpsst/badge?style=flat-square)](https://www.versioneye.com/php/felixsand:phpsst)
 
 A PHP library for distributing (one time) passwords/secrets in a more secure way
 

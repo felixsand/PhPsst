@@ -1,30 +1,37 @@
 {
-    "name": "felixsand/phpsst",
-    "type": "library",
-    "description": "A PHP library for distributing (one time) passwords/secrets in a more secure way",
-    "keywords": ["password","distribution","secret","safely"],
-    "homepage": "https://github.com/felixsand/PhPsst",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Felix Sandström",
-            "email": "felix.sandstrom@me.com",
-            "homepage": "https://github.com/felixsand"
-        }
-    ],
-    "require": {
-        "php": ">=7.1",
-        "Illuminate/Encryption": "~5.4"
-    },
-    "require-dev": {
-      "phpunit/phpunit": "~6.3"
-    },
-    "suggest": {
-        "predis/predis": "Required when using the Redis storage option"
-    },
-    "autoload": {
-        "psr-4": {
-            "": "src/"
-        }
+  "name": "felixsand/phpsst",
+  "type": "library",
+  "description": "A PHP library for distributing (one time) passwords/secrets in a more secure way",
+  "keywords": [
+    "password",
+    "distribution",
+    "secret",
+    "safely"
+  ],
+  "homepage": "https://github.com/felixsand/PhPsst",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Felix Sandström",
+      "email": "felix.sandstrom@me.com",
+      "homepage": "https://github.com/felixsand"
     }
+  ],
+  "require": {
+    "php": ">=7.1",
+    "Illuminate/Encryption": "~5.7",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~7.5"
+  },
+  "suggest": {
+    "predis/predis": "Required when using the Redis storage option",
+    "ext-sqlite3": "Required when using the SQLite storage option"
+  },
+  "autoload": {
+    "psr-4": {
+      "": "src/"
+    }
+  }
 }
