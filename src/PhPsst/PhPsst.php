@@ -2,7 +2,7 @@
 /**
  * PhPsst.
  *
- * @copyright Copyright (c) 2016 Felix Sandström
+ * @copyright Copyright (c) 2018 Felix Sandström
  * @license   MIT
  */
 
@@ -31,7 +31,7 @@ class PhPsst
     /**
      * @const string
      */
-    const CIPHER_DEFAULT = 'AES-256-CBC';
+    public const CIPHER_DEFAULT = 'AES-256-CBC';
 
     public function __construct(Storage $storage, string $cipher = null)
     {
@@ -49,17 +49,15 @@ class PhPsst
             throw new \InvalidArgumentException('The password has to be set');
         }
 
-        $ttl = (int) $ttl;
         if ($ttl < 1) {
             throw new \InvalidArgumentException('TTL has to be higher than 0');
         }
 
-        $views = (int) $views;
         if ($views < 1) {
             throw new \InvalidArgumentException('Views has to be highter han 0');
         }
 
-        $id = uniqid();
+        $id = uniqid('', false);
         $key = $this->generateKey();
         $encrypter = new Encrypter($key, $this->cipher);
 
@@ -70,10 +68,10 @@ class PhPsst
 
     public function retrieve(string $secret): string
     {
-        if (!($idKeyArray = explode(';', $secret)) || count($idKeyArray) != 2) {
+        if (!($idKeyArray = explode(';', $secret)) || \count($idKeyArray) != 2) {
             throw new \InvalidArgumentException('Invalid secret');
         }
-        list($id, $key) = $idKeyArray;
+        [$id, $key] = $idKeyArray;
         $id = preg_replace("/[^a-zA-Z\d]/", '', $id);
 
         if (!($password = $this->storage->get($id))) {

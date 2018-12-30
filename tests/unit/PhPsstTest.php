@@ -39,7 +39,7 @@ class PhPsstTest extends TestCase
     /**
      * @covers ::__construct
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $this->assertInstanceOf(PhPsst::class, $this->phPsst);
     }
@@ -47,7 +47,7 @@ class PhPsstTest extends TestCase
     /**
      * @covers ::__construct
      */
-    public function testConstructWithCipher()
+    public function testConstructWithCipher(): void
     {
         $storageMock = $this->getMockBuilder(FileStorage::class)->disableOriginalConstructor()->getMock();
 
@@ -60,7 +60,7 @@ class PhPsstTest extends TestCase
      * @covers ::store
      * @covers ::generateKey
      */
-    public function testNonDefaultCipher()
+    public function testNonDefaultCipher(): void
     {
         $storageMock = $this->getMockBuilder(FileStorage::class)->disableOriginalConstructor()->getMock();
         $storageMock->expects($this->once())->method('store');
@@ -76,7 +76,7 @@ class PhPsstTest extends TestCase
      * @covers ::store
      * @covers ::generateKey
      */
-    public function testInvalidCipher()
+    public function testInvalidCipher(): void
     {
         $storageMock = $this->getMockBuilder(FileStorage::class)->disableOriginalConstructor()->getMock();
 
@@ -91,7 +91,7 @@ class PhPsstTest extends TestCase
      * @covers ::store
      * @covers ::generateKey
      */
-    public function testStore()
+    public function testStore(): void
     {
         $storageMock = $this->getMockBuilder(FileStorage::class)->disableOriginalConstructor()->getMock();
         $storageMock->expects($this->once())->method('store');
@@ -106,7 +106,7 @@ class PhPsstTest extends TestCase
     /**
      * @covers ::store
      */
-    public function testStoreNoKey()
+    public function testStoreNoKey(): void
     {
         $storageMock = $this->getMockBuilder(FileStorage::class)->disableOriginalConstructor()->getMock();
 
@@ -120,7 +120,7 @@ class PhPsstTest extends TestCase
     /**
      * @covers ::store
      */
-    public function testStoreInvalidTtl()
+    public function testStoreInvalidTtl(): void
     {
         $storageMock = $this->getMockBuilder(FileStorage::class)->disableOriginalConstructor()->getMock();
 
@@ -134,7 +134,7 @@ class PhPsstTest extends TestCase
     /**
      * @covers ::store
      */
-    public function testStoreInvalidViews()
+    public function testStoreInvalidViews(): void
     {
         $storageMock = $this->getMockBuilder(FileStorage::class)->disableOriginalConstructor()->getMock();
 
@@ -148,7 +148,7 @@ class PhPsstTest extends TestCase
     /**
      * @covers ::retrieve
      */
-    public function testRetrieve()
+    public function testRetrieve(): void
     {
         $id = uniqid();
         $key = bin2hex(random_bytes(16));
@@ -168,7 +168,7 @@ class PhPsstTest extends TestCase
     /**
      * @covers ::retrieve
      */
-    public function testRetrieveInvalidSecret()
+    public function testRetrieveInvalidSecret(): void
     {
         $storageMock = $this->getMockBuilder(FileStorage::class)->disableOriginalConstructor()->getMock();
 
@@ -182,7 +182,7 @@ class PhPsstTest extends TestCase
     /**
      * @covers ::retrieve
      */
-    public function testRetrieveNoPasswordFound()
+    public function testRetrieveNoPasswordFound(): void
     {
         $storageMock = $this->getMockBuilder(FileStorage::class)->disableOriginalConstructor()->getMock();
 

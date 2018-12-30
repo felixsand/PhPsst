@@ -2,7 +2,7 @@
 /**
  * PhPsst.
  *
- * @copyright Copyright (c) 2016 Felix Sandström
+ * @copyright Copyright (c) 2018 Felix Sandström
  * @license   MIT
  */
 
@@ -29,7 +29,7 @@ class FileStorage extends Storage
     /**
      * @const string
      */
-    const FILE_SUFFIX = '.phpsst';
+    private const FILE_SUFFIX = '.phpsst';
 
     public function __construct(string $dir, int $gcProbability)
     {
@@ -92,7 +92,7 @@ class FileStorage extends Storage
         $jsonData = $password->getJson();
 
         $fileName = $this->getFileName($password);
-        if (!is_writable(dirname($fileName)) || !file_put_contents($fileName, $jsonData)) {
+        if (!is_writable(\dirname($fileName)) || !file_put_contents($fileName, $jsonData)) {
             throw new \RuntimeException('Can not write file');
         }
 

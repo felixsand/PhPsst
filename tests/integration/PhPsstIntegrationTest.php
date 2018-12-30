@@ -42,7 +42,7 @@ class PhPsstIntegrationTest extends TestCase
      * @covers \PhPsst\PhPsst::store
      * @covers \PhPsst\PhPsst::retrieve
      */
-    public function testStoreRetrieve()
+    public function testStoreRetrieve(): void
     {
         $password = 'my secret password';
         $storage = new FileStorage($this->passwordDirectory, 1);
@@ -64,7 +64,7 @@ class PhPsstIntegrationTest extends TestCase
      * @covers \PhPsst\PhPsst::store
      * @covers \PhPsst\PhPsst::retrieve
      */
-    public function testStoreRetrieveOneView()
+    public function testStoreRetrieveOneView(): void
     {
         $password = 'my secret password';
         $storage = new FileStorage($this->passwordDirectory, 1);
@@ -90,7 +90,7 @@ class PhPsstIntegrationTest extends TestCase
      * @covers \PhPsst\PhPsst::store
      * @covers \PhPsst\PhPsst::retrieve
      */
-    public function testStoreRetrieveTtlTimeout()
+    public function testStoreRetrieveTtlTimeout(): void
     {
         $password = 'my secret password';
         $storage = new FileStorage($this->passwordDirectory, 1);

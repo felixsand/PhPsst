@@ -2,7 +2,7 @@
 /**
  * PhPsst.
  *
- * @copyright Copyright (c) 2016 Felix Sandström
+ * @copyright Copyright (c) 2018 Felix Sandström
  * @license   MIT
  */
 
@@ -55,9 +55,9 @@ SQL;
         if ($this->get($password->getId())) {
             if (!$allowOverwrite) {
                 throw new PhPsstException('The ID already exists', PhPsstException::ID_IS_ALREADY_TAKEN);
-            } else {
-                $this->delete($password);
             }
+
+            $this->delete($password);
         }
 
         $stmt = $this->db->prepare('INSERT INTO phPsst VALUES (:id, :password, :ttl, :views)');
@@ -79,7 +79,7 @@ SQL;
         $result = $stmt->execute();
         if (($row = $result->fetchArray())) {
             $password = new Password($row['id'], $row['password'], $row['ttl'], $row['views']);
-            if (($row['ttl'] < time())) {
+            if ($row['ttl'] < time()) {
                 $this->delete($password);
                 $password = null;
             }
