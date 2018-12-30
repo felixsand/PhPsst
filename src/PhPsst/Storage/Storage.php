@@ -2,7 +2,7 @@
 /**
  * PhPsst.
  *
- * @copyright Copyright (c) 2016 Felix Sandström
+ * @copyright Copyright (c) 2018 Felix Sandström
  * @license   MIT
  */
 
@@ -22,12 +22,8 @@ abstract class Storage
     public function getPasswordFromJson(string $jsonData): ?Password
     {
         $password = null;
-        if (($jsonObject = json_decode($jsonData))
-            && !empty($jsonObject->id)
-            && !empty($jsonObject->password)
-            && !empty($jsonObject->ttl)
-            && !empty($jsonObject->views)
-        ) {
+        $jsonObject = json_decode($jsonData);
+        if ($jsonObject && $this->hasValidJsonData($jsonObject)) {
             $password = new Password($jsonObject->id, $jsonObject->password, $jsonObject->ttl, $jsonObject->views);
             if ($jsonObject->ttl < time()) {
                 $this->delete($password);
@@ -36,5 +32,13 @@ abstract class Storage
         }
 
         return $password;
+    }
+
+    private function hasValidJsonData(\stdClass $jsonObject): bool
+    {
+        return !empty($jsonObject->id)
+            && !empty($jsonObject->password)
+            && !empty($jsonObject->ttl)
+            && !empty($jsonObject->views);
     }
 }

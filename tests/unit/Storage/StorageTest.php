@@ -20,6 +20,7 @@ class StorageTest extends TestCase
 {
     /**
      * @covers ::getPasswordFromJson
+     * @covers ::hasValidJsonData
      */
     public function testGetPasswordFromJson()
     {
@@ -37,6 +38,7 @@ class StorageTest extends TestCase
 
     /**
      * @covers ::getPasswordFromJson
+     * @covers ::hasValidJsonData
      */
     public function testDeleteOnExpired()
     {
