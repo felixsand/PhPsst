@@ -19,7 +19,7 @@
   ],
   "require": {
     "php": ">=7.1",
-    "Illuminate/Encryption": "~5.7",
+    "illuminate/encryption": "~5.7",
     "ext-json": "*"
   },
   "require-dev": {
