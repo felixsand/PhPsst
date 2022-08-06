@@ -25,7 +25,7 @@ class PhPsstIntegrationTest extends TestCase
 
     /**
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->passwordDirectory = sys_get_temp_dir() . '/PhPsstIntegrationTest';
         mkdir($this->passwordDirectory);
@@ -107,7 +107,7 @@ class PhPsstIntegrationTest extends TestCase
 
     /**
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         array_map('unlink', glob("$this->passwordDirectory/*.phpsst"));
         rmdir($this->passwordDirectory);

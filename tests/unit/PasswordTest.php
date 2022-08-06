@@ -25,7 +25,7 @@ class PasswordTest extends TestCase
 
     /**
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->password = new Password('id', 'password', 123, 3);
     }
@@ -102,9 +102,9 @@ class PasswordTest extends TestCase
         $password = new Password('superSecretId', 'superSecretPassword', 123232321244, 983926);
         $jsonData = $password->getJson();
 
-        $this->assertContains('superSecretId', $jsonData);
-        $this->assertContains('superSecretPassword', $jsonData);
-        $this->assertContains('123232321244', $jsonData);
-        $this->assertContains('983926', $jsonData);
+        $this->assertStringContainsString('superSecretId', $jsonData);
+        $this->assertStringContainsString('superSecretPassword', $jsonData);
+        $this->assertStringContainsString('123232321244', $jsonData);
+        $this->assertStringContainsString('983926', $jsonData);
     }
 }

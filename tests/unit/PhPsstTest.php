@@ -28,7 +28,7 @@ class PhPsstTest extends TestCase
      */
     private $phPsst;
 
-    public function setUp()
+    public function setUp(): void
     {
         $storageMock = $this->getMockBuilder(FileStorage::class)->disableOriginalConstructor()->getMock();
 
@@ -69,7 +69,7 @@ class PhPsstTest extends TestCase
         $phPsst = new PhPsst($storageMock, 'AES-128-CBC');
         $secret = $phPsst->store('test', 300, 3);
 
-        $this->assertContains(';', $secret);
+        $this->assertStringContainsString(';', $secret);
     }
 
     /**
@@ -100,7 +100,7 @@ class PhPsstTest extends TestCase
         $phPsst = new PhPsst($storageMock);
         $secret = $phPsst->store('test', 300, 3);
 
-        $this->assertContains(';', $secret);
+        $this->assertStringContainsString(';', $secret);
     }
 
     /**
@@ -193,5 +193,4 @@ class PhPsstTest extends TestCase
         $this->expectExceptionCode(PhPsstException::NO_PASSWORD_WITH_ID_FOUND);
         $phPsst->retrieve('id;secret');
     }
-
 }
