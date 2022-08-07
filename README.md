@@ -73,7 +73,7 @@ $phPsst = new PhPsst(new SqLiteStorage($db, 10));
 ```
 
 ## Requirements
-- PHP 7.1 or above.
+- PHP 8.1 or above.
 - Redis (for the Redis Storage)
 
 ## Demo
