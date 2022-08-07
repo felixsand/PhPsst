@@ -1,7 +1,7 @@
 # PhPsst
 
 [![Latest Stable Version](https://poser.pugx.org/felixsand/phpsst/v/stable)](https://packagist.org/packages/felixsand/phpsst)
-[![Build Status](https://travis-ci.org/felixsand/PhPsst.svg?branch=master)](https://travis-ci.org/felixsand/PhPsst)
+[![Build Status](https://scrutinizer-ci.com/g/felixsand/PhPsst/badges/build.png?b=master)](https://scrutinizer-ci.com/g/felixsand/PhPsst/build-status/master)
 [![License](https://poser.pugx.org/felixsand/phpsst/license)](https://packagist.org/packages/felixsand/phpsst)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/felixsand/PhPsst/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/felixsand/PhPsst/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/felixsand/PhPsst/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/felixsand/PhPsst/?branch=master)
@@ -63,7 +63,7 @@ $phPsst = new PhPsst(new RedisStorage($redis));
 
 ### SqLiteStorage
 If you don't have access to Redis, another storage engine that is suitable for production use is the SqLiteStorage. It's
-not as secure as the RedisStorage, mainly because of it's dependency on a GC; as well as the possibility that the
+not as secure as the RedisStorage, mainly because of it's dependency on a garbage collector; as well as the possibility that the
 SqLite DB file might be included in backups, etc. It's also not suitable for setups with several webservers without
 access to a shared filesystem. The constructor parameter $gcProbability is the same as for the FileStorage.
 
@@ -85,6 +85,7 @@ Felix Sandström <http://github.com/felixsand>
 
 ## Special thanks
 Andreas <http://github.com/jandreasn> for peer review
+Chris Wolf <https://github.com/crslp> for bumping the library to PHP 8.1
 
 ## License
 Licensed under the MIT License - see the `LICENSE` file for details.
