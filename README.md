@@ -84,8 +84,8 @@ $phPsst = new PhPsst(new SqLiteStorage($db, 10));
 Felix Sandström <http://github.com/felixsand>
 
 ## Special thanks
-Andreas <http://github.com/jandreasn> for peer review
-Chris Wolf <https://github.com/crslp> for bumping the library to PHP 8.1
+- Andreas <http://github.com/jandreasn> for peer review
+- Chris Wolf <https://github.com/crslp> for bumping the library to PHP 8.1
 
 ## License
 Licensed under the MIT License - see the `LICENSE` file for details.
