@@ -26,7 +26,7 @@ class FileStorageTest extends TestCase
      */
     private $passwordDirectory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->passwordDirectory = sys_get_temp_dir() . '/PhPsstUnitTest';
         mkdir($this->passwordDirectory);
@@ -218,7 +218,7 @@ class FileStorageTest extends TestCase
         $fileStorage->store($password);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         array_map('unlink', glob("$this->passwordDirectory/*.phpsst"));
         rmdir($this->passwordDirectory);
